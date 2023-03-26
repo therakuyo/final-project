@@ -1,0 +1,48 @@
+package textbasedgame.finalproject.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import textbasedgame.finalproject.entities.CharacterEntity;
+import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.repositories.CharacterRepository;
+import textbasedgame.finalproject.repositories.ClassRepository;
+
+import java.util.List;
+
+@Service
+public class CharacterService {
+
+    @Autowired
+    private CharacterRepository characterRepository;
+
+    @Autowired
+    private ClassRepository classRepository;
+
+
+    public CharacterEntity add(String name, int level, String className){
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setClassName(className);
+
+        ClassEntity savedClass = classRepository.save(classEntity);
+
+        CharacterEntity character = new CharacterEntity();
+        character.setName(name);
+        character.setLevel(level);
+        character.setClassEntity(savedClass);
+
+        return characterRepository.save(character);
+    }
+
+    public List<CharacterEntity> findByName(String name){
+        return characterRepository.findByName(name);
+    }
+
+    public List<CharacterEntity> findByLevel(int level){
+        return characterRepository.findByLevel(level);
+    }
+
+    public List<CharacterEntity> findByClass(String className){
+        return characterRepository.findByClassEntity_ClassName(className);
+    }
+}
