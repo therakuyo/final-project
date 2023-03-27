@@ -35,8 +35,13 @@ public class ItemEntity {
 
 
     @ManyToMany(mappedBy = "characterItems")
-    private List<CharacterEntity> characterItem;
+    private List<CharacterEntity> itemCharacter;
 
-    @ManyToMany(mappedBy = "enemyItems")
-    private List<EnemyEntity> enemyItem;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "enemies_items",
+        joinColumns = {@JoinColumn(name = "item_type")},
+        inverseJoinColumns = {@JoinColumn(name = "enemy_name")}
+    )
+    private List<EnemyEntity> itemEnemy;
 }

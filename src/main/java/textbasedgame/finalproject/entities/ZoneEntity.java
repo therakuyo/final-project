@@ -26,9 +26,14 @@ public class ZoneEntity {
 
     private String difficulty;
 
-    @ManyToMany(mappedBy = "characterZones")
-    private List<CharacterEntity> characterZone;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "characters_zones",
+        joinColumns = {@JoinColumn(name = "zone_id")},
+        inverseJoinColumns = {@JoinColumn(name = "character_name")}
+    )
+    private List<CharacterEntity> zoneCharacter;
 
     @ManyToMany(mappedBy = "enemyZones")
-    private List<EnemyEntity> enemyZone;
+    private List<EnemyEntity> zoneEnemy;
 }

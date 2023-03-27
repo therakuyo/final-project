@@ -18,12 +18,7 @@ public class EnemyEntity {
     @Id
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "enemies_items",
-        joinColumns = {@JoinColumn(name = "enemy_name")},
-        inverseJoinColumns = {@JoinColumn(name = "item_type")}
-    )
+    @ManyToMany(mappedBy = "itemEnemy")
     private List<ItemEntity> enemyItems;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

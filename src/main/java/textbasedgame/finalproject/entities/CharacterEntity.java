@@ -36,11 +36,6 @@ public class CharacterEntity {
     )
     private List<ItemEntity> characterItems;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "characters_zones",
-        joinColumns = {@JoinColumn(name = "character_name")},
-        inverseJoinColumns = {@JoinColumn(name = "zone_id")}
-    )
+    @ManyToMany(mappedBy = "zoneCharacter")
     private List<ZoneEntity> characterZones;
 }
