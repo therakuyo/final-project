@@ -14,6 +14,10 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        characterService.add("name", 12, "assassin");
+//        characterService.add("name", 12, "assassin");
+
+//        characterService.delete("name");
+
+        characterService.update("bam", "new bam");
     }
 }

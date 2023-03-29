@@ -2,12 +2,14 @@ package textbasedgame.finalproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.ClassEntity;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CharacterService {
@@ -19,6 +21,7 @@ public class CharacterService {
     private ClassRepository classRepository;
 
 
+    @Transactional
     public CharacterEntity add(String name, int level, String className){
 
         ClassEntity classEntity = new ClassEntity();
@@ -44,5 +47,29 @@ public class CharacterService {
 
     public List<CharacterEntity> findByClass(String className){
         return characterRepository.findByClassEntity_ClassName(className);
+    }
+
+    public void update(String name, String newName){
+
+//        Optional<CharacterEntity> optionalCharacter = characterRepository.findById(name);
+//
+//        if (optionalCharacter.isPresent()){
+//
+//            CharacterEntity foundCharacter = optionalCharacter.get();
+//            foundCharacter.setName(newName);
+//
+//            characterRepository.save(foundCharacter);
+//        }
+    }
+
+    public void delete(String name){
+
+        Optional<CharacterEntity> optionalCharacter = characterRepository.findById(name);
+
+        if (optionalCharacter.isPresent()){
+            CharacterEntity foundCharacter = optionalCharacter.get();
+
+            characterRepository.delete(foundCharacter);
+        }
     }
 }
