@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
 
@@ -59,14 +60,14 @@ public class CharacterService {
 //        }
     }
 
-    public void delete(String name){
+    public void delete(String name) throws NonexistentCharacterException {
 
         Optional<CharacterEntity> optionalCharacter = characterRepository.findById(name);
 
-        if (optionalCharacter.isPresent()){
-            CharacterEntity foundCharacter = optionalCharacter.get();
-
-            characterRepository.delete(foundCharacter);
+        if (!optionalCharacter.isPresent()){
+            throw new NonexistentCharacterException("This character doesn't exist", name);
+        } else {
+            this.characterRepository.delete(optionalCharacter.get());
         }
     }
 }

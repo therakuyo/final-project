@@ -1,6 +1,7 @@
 package textbasedgame.finalproject.entities;
 
 import lombok.*;
+import textbasedgame.finalproject.enums.Difficulty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ZoneEntity {
     private String zoneName;
 
 
-    private String difficulty;
+    private Difficulty difficulty;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

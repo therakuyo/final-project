@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2023 at 05:22 PM
+-- Generation Time: Apr 02, 2023 at 04:43 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `text_based_game_final_project`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `armor`
+--
+
+CREATE TABLE `armor` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `health_points` int(11) DEFAULT NULL,
+  `resistance` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -51,22 +64,8 @@ INSERT INTO `characters` (`name`, `level`, `class_id`) VALUES
 
 CREATE TABLE `characters_items` (
   `character_name` varchar(30) NOT NULL,
-  `item_type` varchar(30) NOT NULL
+  `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `characters_items`
---
-
-INSERT INTO `characters_items` (`character_name`, `item_type`) VALUES
-('bam', 'amulet'),
-('bam', 'ring'),
-('diablo', 'axe'),
-('diablo', 'sword'),
-('kain', 'amulet'),
-('kain', 'wand'),
-('ozen', 'chestpiece'),
-('ozen', 'helmet');
 
 -- --------------------------------------------------------
 
@@ -102,7 +101,8 @@ INSERT INTO `class` (`id`, `class_name`) VALUES
 (5, 'berserker'),
 (6, 'sorcerer'),
 (7, 'elementalist'),
-(8, 'engineer');
+(8, 'engineer'),
+(9, 'assassin');
 
 -- --------------------------------------------------------
 
@@ -136,18 +136,8 @@ INSERT INTO `enemies` (`name`) VALUES
 
 CREATE TABLE `enemies_items` (
   `enemy_name` varchar(30) NOT NULL,
-  `item_type` varchar(30) NOT NULL
+  `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `enemies_items`
---
-
-INSERT INTO `enemies_items` (`enemy_name`, `item_type`) VALUES
-('dog', 'axe'),
-('dragon', 'chestpiece'),
-('slime', 'bow'),
-('wolf', 'sword');
 
 -- --------------------------------------------------------
 
@@ -167,26 +157,38 @@ CREATE TABLE `enemies_zones` (
 --
 
 CREATE TABLE `items` (
+  `id` int(11) NOT NULL,
   `type` varchar(30) NOT NULL,
-  `attack_damage` int(11) DEFAULT NULL,
-  `magic_damage` int(11) DEFAULT NULL,
-  `armor` int(11) DEFAULT NULL,
-  `health_points` int(11) DEFAULT NULL
+  `rarity` enum('common','magic','epic','legenary','primal') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `items`
+-- Table structure for table `jewellery`
 --
 
-INSERT INTO `items` (`type`, `attack_damage`, `magic_damage`, `armor`, `health_points`) VALUES
-('amulet', 100, 100, NULL, NULL),
-('axe', 70, NULL, NULL, NULL),
-('bow', 80, NULL, NULL, NULL),
-('chestpiece', NULL, NULL, 150, 50),
-('helmet', NULL, NULL, 50, 10),
-('ring', 50, 50, NULL, NULL),
-('sword', 100, NULL, NULL, NULL),
-('wand', NULL, 120, NULL, NULL);
+CREATE TABLE `jewellery` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `attack_damage` int(11) DEFAULT NULL,
+  `magic_damage` int(11) DEFAULT NULL,
+  `health_points` int(11) DEFAULT NULL,
+  `resistance` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weapons`
+--
+
+CREATE TABLE `weapons` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `attack_damage` int(11) DEFAULT NULL,
+  `requirements` enum('two_handed','one_handed') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -197,7 +199,7 @@ INSERT INTO `items` (`type`, `attack_damage`, `magic_damage`, `armor`, `health_p
 CREATE TABLE `zones` (
   `id` int(11) NOT NULL,
   `zone_name` varchar(30) NOT NULL,
-  `difficulty` varchar(30) NOT NULL
+  `difficulty` enum('easy','medium','hard','extreme') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -208,11 +210,17 @@ INSERT INTO `zones` (`id`, `zone_name`, `difficulty`) VALUES
 (5, 'grass field', 'easy'),
 (6, 'dark forest', 'medium'),
 (7, 'swamp', 'hard'),
-(8, 'cave', 'very hard');
+(8, 'cave', '');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `armor`
+--
+ALTER TABLE `armor`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `characters`
@@ -225,8 +233,8 @@ ALTER TABLE `characters`
 -- Indexes for table `characters_items`
 --
 ALTER TABLE `characters_items`
-  ADD UNIQUE KEY `character_name` (`character_name`,`item_type`),
-  ADD KEY `fk_characters_items_items` (`item_type`);
+  ADD UNIQUE KEY `character_name` (`character_name`,`item_id`),
+  ADD KEY `fk_characters_items_items` (`item_id`);
 
 --
 -- Indexes for table `characters_zones`
@@ -252,8 +260,8 @@ ALTER TABLE `enemies`
 -- Indexes for table `enemies_items`
 --
 ALTER TABLE `enemies_items`
-  ADD UNIQUE KEY `enemy_name` (`enemy_name`,`item_type`),
-  ADD KEY `fk_enemies_items_items` (`item_type`);
+  ADD UNIQUE KEY `enemy_name` (`enemy_name`,`item_id`),
+  ADD KEY `fk_enemies_items_items` (`item_id`);
 
 --
 -- Indexes for table `enemies_zones`
@@ -267,7 +275,19 @@ ALTER TABLE `enemies_zones`
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
-  ADD PRIMARY KEY (`type`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jewellery`
+--
+ALTER TABLE `jewellery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `weapons`
+--
+ALTER TABLE `weapons`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `zones`
@@ -283,7 +303,13 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zones`
@@ -296,6 +322,12 @@ ALTER TABLE `zones`
 --
 
 --
+-- Constraints for table `armor`
+--
+ALTER TABLE `armor`
+  ADD CONSTRAINT `fk_armor_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `characters`
 --
 ALTER TABLE `characters`
@@ -306,7 +338,7 @@ ALTER TABLE `characters`
 --
 ALTER TABLE `characters_items`
   ADD CONSTRAINT `fk_characters_items_characters` FOREIGN KEY (`character_name`) REFERENCES `characters` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_characters_items_items` FOREIGN KEY (`item_type`) REFERENCES `items` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_characters_items_items` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
 
 --
 -- Constraints for table `characters_zones`
@@ -320,7 +352,7 @@ ALTER TABLE `characters_zones`
 --
 ALTER TABLE `enemies_items`
   ADD CONSTRAINT `fk_enemies_items_enemies` FOREIGN KEY (`enemy_name`) REFERENCES `enemies` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_enemies_items_items` FOREIGN KEY (`item_type`) REFERENCES `items` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_enemies_items_items` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
 
 --
 -- Constraints for table `enemies_zones`
@@ -328,6 +360,18 @@ ALTER TABLE `enemies_items`
 ALTER TABLE `enemies_zones`
   ADD CONSTRAINT `fk_enemies_zones_enemies` FOREIGN KEY (`enemy_name`) REFERENCES `enemies` (`name`),
   ADD CONSTRAINT `fk_enemies_zones_zones` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`);
+
+--
+-- Constraints for table `jewellery`
+--
+ALTER TABLE `jewellery`
+  ADD CONSTRAINT `fk_jewellery_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `weapons`
+--
+ALTER TABLE `weapons`
+  ADD CONSTRAINT `fk_weapons_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
