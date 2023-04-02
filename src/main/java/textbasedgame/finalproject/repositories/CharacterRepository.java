@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface CharacterRepository extends CrudRepository<CharacterEntity, String> {
 
-    List<CharacterEntity> findByName(String name);
-
     List<CharacterEntity> findByLevel(int level);
 
     List<CharacterEntity> findByClassEntity_ClassName(String name);

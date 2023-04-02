@@ -1,6 +1,7 @@
 package textbasedgame.finalproject.entities;
 
 import lombok.*;
+import textbasedgame.finalproject.enums.Rarity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,26 +13,19 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name = "items")
-public class ItemEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class ItemEntity {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+
     private String type;
 
 
-    @Column(name = "attack_damage")
-    private int attackDamage;
-
-
-    @Column(name = "magic_damage")
-    private int magicDamage;
-
-
-    private int armor;
-
-
-    @Column(name = "health_points")
-    private int healthPoints;
+    private Rarity rarity;
 
 
     @ManyToMany(mappedBy = "characterItems")
@@ -40,7 +34,7 @@ public class ItemEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "enemies_items",
-        joinColumns = {@JoinColumn(name = "item_type")},
+        joinColumns = {@JoinColumn(name = "item_id")},
         inverseJoinColumns = {@JoinColumn(name = "enemy_name")}
     )
     private List<EnemyEntity> itemEnemy;

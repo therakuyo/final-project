@@ -32,7 +32,7 @@ public class CharacterEntity {
     @JoinTable(
         name = "characters_items",
         joinColumns = {@JoinColumn(name = "character_name")},
-        inverseJoinColumns = {@JoinColumn(name = "item_type")}
+        inverseJoinColumns = {@JoinColumn(name = "item_id")}
     )
     private List<ItemEntity> characterItems;
 

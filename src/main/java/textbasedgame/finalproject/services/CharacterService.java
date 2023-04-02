@@ -37,9 +37,6 @@ public class CharacterService {
         return characterRepository.save(character);
     }
 
-    public List<CharacterEntity> findByName(String name){
-        return characterRepository.findByName(name);
-    }
 
     public List<CharacterEntity> findByLevel(int level){
         return characterRepository.findByLevel(level);
