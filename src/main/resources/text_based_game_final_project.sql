@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `armor`
 --
 
-CREATE TABLE `armor` (
+create TABLE `armor` (
   `id` int(11) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `health_points` int(11) DEFAULT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `armor` (
 -- Table structure for table `characters`
 --
 
-CREATE TABLE `characters` (
+create TABLE `characters` (
   `name` varchar(30) NOT NULL,
   `level` int(11) NOT NULL,
   `class_id` int(11) NOT NULL
@@ -50,7 +50,7 @@ CREATE TABLE `characters` (
 -- Dumping data for table `characters`
 --
 
-INSERT INTO `characters` (`name`, `level`, `class_id`) VALUES
+insert into `characters` (`name`, `level`, `class_id`) VALUES
 ('bam', 5, 7),
 ('diablo', 25, 5),
 ('kain', 15, 6),
@@ -62,7 +62,7 @@ INSERT INTO `characters` (`name`, `level`, `class_id`) VALUES
 -- Table structure for table `characters_items`
 --
 
-CREATE TABLE `characters_items` (
+create TABLE `characters_items` (
   `character_name` varchar(30) NOT NULL,
   `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -73,7 +73,7 @@ CREATE TABLE `characters_items` (
 -- Table structure for table `characters_zones`
 --
 
-CREATE TABLE `characters_zones` (
+create TABLE `characters_zones` (
   `character_name` varchar(30) NOT NULL,
   `zone_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -84,7 +84,7 @@ CREATE TABLE `characters_zones` (
 -- Table structure for table `class`
 --
 
-CREATE TABLE `class` (
+create TABLE `class` (
   `id` int(11) NOT NULL,
   `class_name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -93,7 +93,7 @@ CREATE TABLE `class` (
 -- Dumping data for table `class`
 --
 
-INSERT INTO `class` (`id`, `class_name`) VALUES
+insert into `class` (`id`, `class_name`) VALUES
 (1, 'juggernaut'),
 (2, 'healer'),
 (3, 'assassin'),
@@ -110,7 +110,7 @@ INSERT INTO `class` (`id`, `class_name`) VALUES
 -- Table structure for table `enemies`
 --
 
-CREATE TABLE `enemies` (
+create TABLE `enemies` (
   `name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -118,7 +118,7 @@ CREATE TABLE `enemies` (
 -- Dumping data for table `enemies`
 --
 
-INSERT INTO `enemies` (`name`) VALUES
+insert into `enemies` (`name`) VALUES
 ('bear'),
 ('dog'),
 ('dragon'),
@@ -134,7 +134,7 @@ INSERT INTO `enemies` (`name`) VALUES
 -- Table structure for table `enemies_items`
 --
 
-CREATE TABLE `enemies_items` (
+create TABLE `enemies_items` (
   `enemy_name` varchar(30) NOT NULL,
   `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -145,7 +145,7 @@ CREATE TABLE `enemies_items` (
 -- Table structure for table `enemies_zones`
 --
 
-CREATE TABLE `enemies_zones` (
+create TABLE `enemies_zones` (
   `enemy_name` varchar(30) NOT NULL,
   `zone_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -156,7 +156,7 @@ CREATE TABLE `enemies_zones` (
 -- Table structure for table `items`
 --
 
-CREATE TABLE `items` (
+create TABLE `items` (
   `id` int(11) NOT NULL,
   `type` varchar(30) NOT NULL,
   `rarity` enum('common','magic','epic','legenary','primal') NOT NULL
@@ -168,7 +168,7 @@ CREATE TABLE `items` (
 -- Table structure for table `jewellery`
 --
 
-CREATE TABLE `jewellery` (
+create TABLE `jewellery` (
   `id` int(11) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `attack_damage` int(11) DEFAULT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `jewellery` (
 -- Table structure for table `weapons`
 --
 
-CREATE TABLE `weapons` (
+create TABLE `weapons` (
   `id` int(11) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `attack_damage` int(11) DEFAULT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE `weapons` (
 -- Table structure for table `zones`
 --
 
-CREATE TABLE `zones` (
+create TABLE `zones` (
   `id` int(11) NOT NULL,
   `zone_name` varchar(30) NOT NULL,
   `difficulty` enum('easy','medium','hard','extreme') NOT NULL
@@ -206,7 +206,7 @@ CREATE TABLE `zones` (
 -- Dumping data for table `zones`
 --
 
-INSERT INTO `zones` (`id`, `zone_name`, `difficulty`) VALUES
+insert into `zones` (`id`, `zone_name`, `difficulty`) VALUES
 (5, 'grass field', 'easy'),
 (6, 'dark forest', 'medium'),
 (7, 'swamp', 'hard'),
@@ -219,27 +219,27 @@ INSERT INTO `zones` (`id`, `zone_name`, `difficulty`) VALUES
 --
 -- Indexes for table `armor`
 --
-ALTER TABLE `armor`
+alter table `armor`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `characters`
 --
-ALTER TABLE `characters`
+alter table `characters`
   ADD PRIMARY KEY (`name`),
   ADD UNIQUE KEY `class_id` (`class_id`);
 
 --
 -- Indexes for table `characters_items`
 --
-ALTER TABLE `characters_items`
+alter table `characters_items`
   ADD UNIQUE KEY `character_name` (`character_name`,`item_id`),
   ADD KEY `fk_characters_items_items` (`item_id`);
 
 --
 -- Indexes for table `characters_zones`
 --
-ALTER TABLE `characters_zones`
+alter table `characters_zones`
   ADD PRIMARY KEY (`character_name`,`zone_id`),
   ADD UNIQUE KEY `character_name` (`character_name`,`zone_id`),
   ADD KEY `fk_characters_zones_zones` (`zone_id`);
@@ -247,26 +247,26 @@ ALTER TABLE `characters_zones`
 --
 -- Indexes for table `class`
 --
-ALTER TABLE `class`
+alter table `class`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `enemies`
 --
-ALTER TABLE `enemies`
+alter table `enemies`
   ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `enemies_items`
 --
-ALTER TABLE `enemies_items`
+alter table `enemies_items`
   ADD UNIQUE KEY `enemy_name` (`enemy_name`,`item_id`),
   ADD KEY `fk_enemies_items_items` (`item_id`);
 
 --
 -- Indexes for table `enemies_zones`
 --
-ALTER TABLE `enemies_zones`
+alter table `enemies_zones`
   ADD PRIMARY KEY (`enemy_name`,`zone_id`),
   ADD UNIQUE KEY `enemy_name` (`enemy_name`,`zone_id`),
   ADD KEY `fk_enemies_zones_zones` (`zone_id`);
@@ -274,25 +274,25 @@ ALTER TABLE `enemies_zones`
 --
 -- Indexes for table `items`
 --
-ALTER TABLE `items`
+alter table `items`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `jewellery`
 --
-ALTER TABLE `jewellery`
+alter table `jewellery`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `weapons`
 --
-ALTER TABLE `weapons`
+alter table `weapons`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `zones`
 --
-ALTER TABLE `zones`
+alter table `zones`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -302,19 +302,19 @@ ALTER TABLE `zones`
 --
 -- AUTO_INCREMENT for table `class`
 --
-ALTER TABLE `class`
+alter table `class`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
-ALTER TABLE `items`
+alter table `items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `zones`
 --
-ALTER TABLE `zones`
+alter table `zones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
@@ -324,55 +324,55 @@ ALTER TABLE `zones`
 --
 -- Constraints for table `armor`
 --
-ALTER TABLE `armor`
-  ADD CONSTRAINT `fk_armor_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
+alter table `armor`
+  ADD CONSTRAINT `fk_armor_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON delete CASCADE;
 
 --
 -- Constraints for table `characters`
 --
-ALTER TABLE `characters`
-  ADD CONSTRAINT `fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+alter table `characters`
+  ADD CONSTRAINT `fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON delete CASCADE ON update CASCADE;
 
 --
 -- Constraints for table `characters_items`
 --
-ALTER TABLE `characters_items`
-  ADD CONSTRAINT `fk_characters_items_characters` FOREIGN KEY (`character_name`) REFERENCES `characters` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+alter table `characters_items`
+  ADD CONSTRAINT `fk_characters_items_characters` FOREIGN KEY (`character_name`) REFERENCES `characters` (`name`) ON delete CASCADE ON update CASCADE,
   ADD CONSTRAINT `fk_characters_items_items` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
 
 --
 -- Constraints for table `characters_zones`
 --
-ALTER TABLE `characters_zones`
-  ADD CONSTRAINT `fk_characters_zones_characters` FOREIGN KEY (`character_name`) REFERENCES `characters` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_characters_zones_zones` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+alter table `characters_zones`
+  ADD CONSTRAINT `fk_characters_zones_characters` FOREIGN KEY (`character_name`) REFERENCES `characters` (`name`) ON delete CASCADE ON update CASCADE,
+  ADD CONSTRAINT `fk_characters_zones_zones` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`) ON delete CASCADE ON update CASCADE;
 
 --
 -- Constraints for table `enemies_items`
 --
-ALTER TABLE `enemies_items`
-  ADD CONSTRAINT `fk_enemies_items_enemies` FOREIGN KEY (`enemy_name`) REFERENCES `enemies` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+alter table `enemies_items`
+  ADD CONSTRAINT `fk_enemies_items_enemies` FOREIGN KEY (`enemy_name`) REFERENCES `enemies` (`name`) ON delete CASCADE ON update CASCADE,
   ADD CONSTRAINT `fk_enemies_items_items` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
 
 --
 -- Constraints for table `enemies_zones`
 --
-ALTER TABLE `enemies_zones`
+alter table `enemies_zones`
   ADD CONSTRAINT `fk_enemies_zones_enemies` FOREIGN KEY (`enemy_name`) REFERENCES `enemies` (`name`),
   ADD CONSTRAINT `fk_enemies_zones_zones` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`);
 
 --
 -- Constraints for table `jewellery`
 --
-ALTER TABLE `jewellery`
-  ADD CONSTRAINT `fk_jewellery_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
+alter table `jewellery`
+  ADD CONSTRAINT `fk_jewellery_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON delete CASCADE;
 
 --
 -- Constraints for table `weapons`
 --
-ALTER TABLE `weapons`
-  ADD CONSTRAINT `fk_weapons_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON DELETE CASCADE;
-COMMIT;
+alter table `weapons`
+  ADD CONSTRAINT `fk_weapons_items` FOREIGN KEY (`id`) REFERENCES `items` (`id`) ON delete CASCADE;
+commit;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
