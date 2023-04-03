@@ -5,13 +5,13 @@ import textbasedgame.finalproject.enums.Rarity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "items")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ItemEntity {
@@ -29,13 +29,8 @@ public abstract class ItemEntity {
 
 
     @ManyToMany(mappedBy = "characterItems")
-    private List<CharacterEntity> itemCharacter;
+    private Set<CharacterEntity> itemCharacter;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "enemies_items",
-        joinColumns = {@JoinColumn(name = "item_id")},
-        inverseJoinColumns = {@JoinColumn(name = "enemy_name")}
-    )
-    private List<EnemyEntity> itemEnemy;
+    @ManyToMany(mappedBy = "enemyItems")
+    private Set<EnemyEntity> itemEnemy;
 }

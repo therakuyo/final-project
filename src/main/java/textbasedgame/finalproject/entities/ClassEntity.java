@@ -9,7 +9,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "class")
 public class ClassEntity {
 

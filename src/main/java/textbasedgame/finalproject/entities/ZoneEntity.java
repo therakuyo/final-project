@@ -4,14 +4,13 @@ import lombok.*;
 import textbasedgame.finalproject.enums.Difficulty;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "zones")
 public class ZoneEntity {
 
@@ -27,14 +26,9 @@ public class ZoneEntity {
 
     private Difficulty difficulty;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "characters_zones",
-        joinColumns = {@JoinColumn(name = "zone_id")},
-        inverseJoinColumns = {@JoinColumn(name = "character_name")}
-    )
-    private List<CharacterEntity> zoneCharacter;
+    @ManyToMany(mappedBy = "characterZones")
+    private Set<CharacterEntity> zoneCharacter;
 
     @ManyToMany(mappedBy = "enemyZones")
-    private List<EnemyEntity> zoneEnemy;
+    private Set<EnemyEntity> zoneEnemy;
 }

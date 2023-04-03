@@ -3,14 +3,13 @@ package textbasedgame.finalproject.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "enemies")
 public class EnemyEntity {
 
@@ -18,8 +17,13 @@ public class EnemyEntity {
     @Id
     private String name;
 
-    @ManyToMany(mappedBy = "itemEnemy")
-    private List<ItemEntity> enemyItems;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "enemies_items",
+        joinColumns = {@JoinColumn(name = "enemy_name")},
+        inverseJoinColumns = {@JoinColumn(name = "item_id")}
+    )
+    private Set<ItemEntity> enemyItems;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -27,5 +31,5 @@ public class EnemyEntity {
         joinColumns = {@JoinColumn(name = "enemy_name")},
         inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
-    private List<ZoneEntity> enemyZones;
+    private Set<ZoneEntity> enemyZones;
 }

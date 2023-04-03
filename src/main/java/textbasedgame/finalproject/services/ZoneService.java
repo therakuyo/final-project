@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import textbasedgame.finalproject.entities.ZoneEntity;
 import textbasedgame.finalproject.enums.Difficulty;
 
-@Service
+//@Service
 public class ZoneService {
 
-    @Autowired
+//    @Autowired
     private ZoneService zoneService;
 
 

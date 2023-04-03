@@ -23,7 +23,7 @@ public class CharacterService {
 
 
     @Transactional
-    public CharacterEntity add(String name, int level, String className){
+    public CharacterEntity add(String name, int level, String className) {
 
         ClassEntity classEntity = new ClassEntity();
         classEntity.setClassName(className);
@@ -39,24 +39,25 @@ public class CharacterService {
     }
 
 
-    public List<CharacterEntity> findByLevel(int level){
+    public List<CharacterEntity> findByLevel(int level) {
         return characterRepository.findByLevel(level);
     }
 
-    public List<CharacterEntity> findByClass(String className){
+    public List<CharacterEntity> findByClass(String className) {
         return characterRepository.findByClassEntity_ClassName(className);
     }
 
-    public void update(String name, String newName){
+    public void update(String name, String newName) throws NonexistentCharacterException {
 
 //        Optional<CharacterEntity> optionalCharacter = characterRepository.findById(name);
 //
-//        if (optionalCharacter.isPresent()){
+//        if (!optionalCharacter.isPresent()) {
+//            throw new NonexistentCharacterException("This character doesn't exist", name);
+//        } else {
+//            CharacterEntity updatedCharacter = optionalCharacter.get();
+//            updatedCharacter.setName(newName);
 //
-//            CharacterEntity foundCharacter = optionalCharacter.get();
-//            foundCharacter.setName(newName);
-//
-//            characterRepository.save(foundCharacter);
+//            this.characterRepository.save(updatedCharacter);
 //        }
     }
 
@@ -64,7 +65,7 @@ public class CharacterService {
 
         Optional<CharacterEntity> optionalCharacter = characterRepository.findById(name);
 
-        if (!optionalCharacter.isPresent()){
+        if (!optionalCharacter.isPresent()) {
             throw new NonexistentCharacterException("This character doesn't exist", name);
         } else {
             this.characterRepository.delete(optionalCharacter.get());
