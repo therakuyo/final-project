@@ -3,6 +3,7 @@ package textbasedgame.finalproject.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -19,4 +20,8 @@ public class ClassEntity {
 
     @Column(name = "class_name")
     private String className;
+
+
+    @OneToMany(mappedBy = "characterClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CharacterEntity> classCharacters;
 }

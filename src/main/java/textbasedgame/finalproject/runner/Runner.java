@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import textbasedgame.finalproject.services.CharacterService;
 
 @Component
-public class Application implements CommandLineRunner {
+public class Runner implements CommandLineRunner {
 
     @Autowired
     private CharacterService characterService;

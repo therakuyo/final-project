@@ -25,17 +25,7 @@ public class CharacterService {
     @Transactional
     public CharacterEntity add(String name, int level, String className) {
 
-        ClassEntity classEntity = new ClassEntity();
-        classEntity.setClassName(className);
-
-        ClassEntity savedClass = classRepository.save(classEntity);
-
-        CharacterEntity character = new CharacterEntity();
-        character.setName(name);
-        character.setLevel(level);
-        character.setClassEntity(savedClass);
-
-        return characterRepository.save(character);
+        return null;
     }
 
 

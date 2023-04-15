@@ -22,9 +22,9 @@ public class CharacterEntity {
 
 
     @ToString.Exclude
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id")
-    private ClassEntity classEntity;
+    private ClassEntity characterClass;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -42,4 +42,9 @@ public class CharacterEntity {
         inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
     private Set<ZoneEntity> characterZones;
+
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity characterUser;
 }
