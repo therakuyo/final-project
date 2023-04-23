@@ -4,7 +4,6 @@ import lombok.*;
 import textbasedgame.finalproject.enums.Difficulty;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -23,12 +22,8 @@ public class ZoneEntity {
     @Column(name = "zone_name")
     private String zoneName;
 
-
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @ManyToMany(mappedBy = "characterZones")
-    private Set<CharacterEntity> zoneCharacter;
 
-    @ManyToMany(mappedBy = "enemyZones")
-    private Set<EnemyEntity> zoneEnemy;
 }

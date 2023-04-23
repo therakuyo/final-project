@@ -3,6 +3,7 @@ package textbasedgame.finalproject.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,6 @@ public class CharacterEntity {
     private int level;
 
 
-    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id")
     private ClassEntity characterClass;
@@ -30,21 +30,19 @@ public class CharacterEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "characters_items",
-        joinColumns = {@JoinColumn(name = "character_name")},
-        inverseJoinColumns = {@JoinColumn(name = "item_id")}
+        joinColumns = @JoinColumn(name = "character_name"),
+        inverseJoinColumns = @JoinColumn(name = "item_id")
     )
-    private Set<ItemEntity> characterItems;
+    private Set<ItemEntity> characterItems = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "characters_zones",
-        joinColumns = {@JoinColumn(name = "character_name")},
-        inverseJoinColumns = {@JoinColumn(name = "zone_id")}
+        joinColumns = @JoinColumn(name = "character_name"),
+        inverseJoinColumns = @JoinColumn(name = "zone_id")
     )
-    private Set<ZoneEntity> characterZones;
+    private Set<ZoneEntity> characterZones = new HashSet<>();
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity characterUser;
+
 }

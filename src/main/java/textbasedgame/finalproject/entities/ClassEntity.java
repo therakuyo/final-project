@@ -22,6 +22,4 @@ public class ClassEntity {
     private String className;
 
 
-    @OneToMany(mappedBy = "characterClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CharacterEntity> classCharacters;
 }

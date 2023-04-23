@@ -18,6 +18,5 @@ public class Runner implements CommandLineRunner {
 
 //        characterService.delete("name");
 
-        characterService.update("bam", "new bam");
     }
 }

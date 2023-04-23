@@ -23,5 +23,6 @@ public class WeaponEntity extends ItemEntity{
     @Column(name = "attack_damage")
     private int attackDamage;
 
+    @Enumerated(EnumType.STRING)
     private Requirements requirements;
 }

@@ -24,16 +24,9 @@ public class ClassService {
 
     }
 
+    public void delete(int id){
 
-    public void delete(int id) throws NonexistentResourceException {
-
-        Optional<ClassEntity> foundClass = this.classRepository.findById(id);
-
-        if (!foundClass.isPresent()){
-            throw new NonexistentResourceException("This class doesn't exist", id);
-        } else {
-            this.classRepository.delete(foundClass.get());
-        }
+        this.classRepository.deleteById(id);
 
     }
 

@@ -66,12 +66,12 @@ public class ItemService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<ItemEntity> foundItem = this.itemRepository.findById(id);
+        Optional<ItemEntity> itemOptional = this.itemRepository.findById(id);
 
-        if (!foundItem.isPresent()){
+        if (!itemOptional.isPresent()){
             throw new NonexistentResourceException("This item doesn't exist", id);
         } else {
-            this.itemRepository.delete(foundItem.get());
+            this.itemRepository.delete(itemOptional.get());
         }
 
     }

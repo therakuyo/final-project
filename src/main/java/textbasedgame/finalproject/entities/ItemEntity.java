@@ -24,13 +24,8 @@ public abstract class ItemEntity {
 
     private String type;
 
-
+    @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
 
-    @ManyToMany(mappedBy = "characterItems")
-    private Set<CharacterEntity> itemCharacter;
-
-    @ManyToMany(mappedBy = "enemyItems")
-    private Set<EnemyEntity> itemEnemy;
 }
