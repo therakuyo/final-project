@@ -32,6 +32,18 @@ public class CharacterService {
         return this.characterRepository.findByClassEntity_ClassName(className);
     }
 
+    public Optional<CharacterEntity> findByName(String name){
+
+        return this.characterRepository.findById(name);
+
+    }
+
+    public Iterable<CharacterEntity> getAll() {
+
+        return this.characterRepository.findAll();
+
+    }
+
 
     @Transactional
     public CharacterEntity add(CharacterDTO characterDTO, int classId) {
@@ -74,6 +86,7 @@ public class CharacterService {
         characterEntity.getCharacterClass().setClassName(characterDTO.getClassName());
 
         return characterEntity;
+        //TODO - not working as intended
 
     }
 
