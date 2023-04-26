@@ -22,7 +22,7 @@ public class EnemyService {
 
         enemy.setName(name);
 
-        return enemy;
+        return this.enemyRepository.save(enemy);
 
     }
 
@@ -39,7 +39,7 @@ public class EnemyService {
         EnemyEntity enemy = enemyOptional.get();
         enemy.setName(name);
 
-        return enemy;
+        return this.enemyRepository.save(enemy);
 
     }
 

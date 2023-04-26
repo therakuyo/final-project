@@ -5,12 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.entities.ClassEntity;
 import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +30,7 @@ public class CharacterService {
         return this.characterRepository.findByClassEntity_ClassName(className);
     }
 
-    public Optional<CharacterEntity> findByName(String name){
+    public Optional<CharacterEntity> findByName(String name) {
 
         return this.characterRepository.findById(name);
 
@@ -54,11 +52,12 @@ public class CharacterService {
         character.setLevel(characterDTO.getLevel());
         character.setCharacterClass(this.classRepository.findById(classId).get());
 
-        return character;
+        return this.characterRepository.save(character);
 
     }
 
 
+    @Transactional
     public CharacterEntity changeName(String name, CharacterDTO characterDTO) throws NonexistentCharacterException {
 
         Optional<CharacterEntity> characterOptional = this.characterRepository.findById(name);
@@ -70,10 +69,11 @@ public class CharacterService {
         CharacterEntity characterEntity = characterOptional.get();
         characterEntity.setName(characterDTO.getName());
 
-        return characterEntity;
+        return this.characterRepository.save(characterEntity);
 
     }
 
+    @Transactional
     public CharacterEntity changeClass(String name, CharacterDTO characterDTO) throws NonexistentCharacterException {
 
         Optional<CharacterEntity> characterOptional = this.characterRepository.findById(name);
