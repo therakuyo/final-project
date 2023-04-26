@@ -18,5 +18,11 @@ public class Runner implements CommandLineRunner {
 
 //        characterService.delete("name");
 
+        /*
+
+        not needed maybe, to be deleted after confirming
+
+         */
+
     }
 }
