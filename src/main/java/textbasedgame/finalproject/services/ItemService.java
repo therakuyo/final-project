@@ -45,7 +45,7 @@ public class ItemService {
         armor.setType(armorDTO.getType());
         armor.setRarity(armorDTO.getRarity());
 
-        return this.armorRepository.save(armor);
+        return this.itemRepository.save(armor);
 
     }
 
@@ -61,7 +61,7 @@ public class ItemService {
         weapon.setType(weaponDTO.getType());
         weapon.setRarity(weaponDTO.getRarity());
 
-        return this.weaponRepository.save(weapon);
+        return this.itemRepository.save(weapon);
 
     }
 
@@ -79,7 +79,7 @@ public class ItemService {
         jewellery.setType(jewelleryDTO.getType());
         jewellery.setRarity(jewelleryDTO.getRarity());
 
-        return this.jewelleryRepository.save(jewellery);
+        return this.itemRepository.save(jewellery);
 
     }
 
@@ -136,7 +136,7 @@ public class ItemService {
         armor.setHealthPoints(armorDTO.getHealthPoints());
         armor.setResistance(armorDTO.getResistance());
 
-        return this.armorRepository.save(armor);
+        return this.itemRepository.save(armor);
 
     }
 
@@ -158,7 +158,7 @@ public class ItemService {
         weapon.setAttackDamage(weaponDTO.getAttackDamage());
         weapon.setRequirements(weaponDTO.getRequirements());
 
-        return this.weaponRepository.save(weapon);
+        return this.itemRepository.save(weapon);
 
     }
 
@@ -182,7 +182,7 @@ public class ItemService {
         jewellery.setAttackDamage(jewelleryDTO.getAttackDamage());
         jewellery.setMagicDamage(jewelleryDTO.getMagicDamage());
 
-        return this.jewelleryRepository.save(jewellery);
+        return this.itemRepository.save(jewellery);
 
     }
 
@@ -218,7 +218,7 @@ public class ItemService {
             armor.setHealthPoints(armorDTO.getHealthPoints());
         }
 
-        return this.armorRepository.save(armor);
+        return this.itemRepository.save(armor);
 
     }
 
@@ -254,7 +254,7 @@ public class ItemService {
             weapon.setAttackDamage(weaponDTO.getAttackDamage());
         }
 
-        return this.weaponRepository.save(weapon);
+        return this.itemRepository.save(weapon);
 
     }
 
@@ -298,7 +298,7 @@ public class ItemService {
             jewellery.setResistance(jewelleryDTO.getResistance());
         }
 
-        return this.jewelleryRepository.save(jewellery);
+        return this.itemRepository.save(jewellery);
 
     }
 

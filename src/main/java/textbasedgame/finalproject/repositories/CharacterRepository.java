@@ -10,5 +10,5 @@ public interface CharacterRepository extends CrudRepository<CharacterEntity, Str
 
     List<CharacterEntity> findByLevel(int level);
 
-    List<CharacterEntity> findByClassEntity_ClassName(String name);
+//    List<CharacterEntity> findByClassEntity_ClassName(String name);
 }

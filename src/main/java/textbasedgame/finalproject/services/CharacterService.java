@@ -26,9 +26,9 @@ public class CharacterService {
         return this.characterRepository.findByLevel(level);
     }
 
-    public List<CharacterEntity> findByClass(String className) {
-        return this.characterRepository.findByClassEntity_ClassName(className);
-    }
+//    public List<CharacterEntity> findByClass(String className) {
+//        return this.characterRepository.findByClassEntity_ClassName(className);
+//    }
 
     public Optional<CharacterEntity> findByName(String name) {
 
@@ -52,6 +52,8 @@ public class CharacterService {
         character.setLevel(characterDTO.getLevel());
         character.setCharacterClass(this.classRepository.findById(classId).get());
 
+        //TODO - exceptie daca nu exista clasa
+
         return this.characterRepository.save(character);
 
     }
@@ -70,6 +72,8 @@ public class CharacterService {
         characterEntity.setName(characterDTO.getName());
 
         return this.characterRepository.save(characterEntity);
+
+        //make pk id - integer
 
     }
 

@@ -15,7 +15,6 @@ import textbasedgame.finalproject.dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.services.CharacterService;
-import textbasedgame.finalproject.services.ClassService;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;

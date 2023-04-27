@@ -43,6 +43,4 @@ public class CharacterEntity {
     )
     private Set<ZoneEntity> characterZones = new HashSet<>();
 
-
-
 }

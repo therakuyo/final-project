@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.validators.NoDigits;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class CharacterDTO {
     private String name;
 
     @Min(1)
+    @Max(20)
     private Integer level;
 
     @NotEmpty

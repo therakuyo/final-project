@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
-import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.EnemyRepository;
 
 import java.util.Optional;
@@ -40,6 +39,8 @@ public class EnemyService {
         enemy.setName(name);
 
         return this.enemyRepository.save(enemy);
+
+        //make pk id - int
 
     }
 

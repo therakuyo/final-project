@@ -3,10 +3,8 @@ package textbasedgame.finalproject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import textbasedgame.finalproject.entities.ClassEntity;
-import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.ClassRepository;
 
-import java.util.Optional;
 
 @Service
 public class ClassService {
