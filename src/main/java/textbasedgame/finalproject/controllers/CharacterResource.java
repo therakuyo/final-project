@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
+import textbasedgame.finalproject.exceptions.NonexistentResourceException;
+import textbasedgame.finalproject.services.AssignToZoneService;
 import textbasedgame.finalproject.services.CharacterService;
 
 import javax.validation.ConstraintViolationException;
@@ -33,6 +34,9 @@ public class CharacterResource {
     @Autowired
     private CharacterService characterService;
 
+    @Autowired
+    private AssignToZoneService assignToZoneService;
+
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -42,7 +46,12 @@ public class CharacterResource {
 
     }
 
-
+    @Operation(summary = "Get character by name")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = CharacterListDTO.class))
+    )
     public ResponseEntity<CharacterListDTO> getAll() {
 
         Iterable<CharacterEntity> characters = this.characterService.getAll();
@@ -60,7 +69,7 @@ public class CharacterResource {
     }
 
 
-    @Operation(summary = "Get character by name (id)")
+    @Operation(summary = "Get character by name")
     @ApiResponse(
         responseCode = "200",
         description = "OK",
@@ -86,36 +95,94 @@ public class CharacterResource {
 
     }
 
+    @Operation(summary = "Delete character by id")
+    @ApiResponse(
+        responseCode = "204",
+        description = "NO_CONTENT",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") Integer id) {
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("name") String name) {
-
-        this.characterService.delete(name);
+        this.characterService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
 
+    @Operation(summary = "Create character")
+    @ApiResponse(
+        responseCode = "201",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = CharacterDTO.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
     @PostMapping
     public ResponseEntity<CharacterDTO> create(@Min(1) @PathVariable int id,
                                                @Valid @RequestBody CharacterDTO character) {
 
-        CharacterEntity characterEntity = this.characterService.add(character, id);
-        return new ResponseEntity<>(CharacterDTO.from(characterEntity), HttpStatus.CREATED);
+        try {
+            CharacterEntity characterEntity = this.characterService.add(character, id);
+
+            return new ResponseEntity<>(CharacterDTO.from(characterEntity), HttpStatus.CREATED);
+        } catch (NonexistentResourceException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
     }
 
 
-    @PatchMapping("/{name}")
-    public ResponseEntity<CharacterDTO> changeName(@PathVariable("name") String name,
+    @Operation(summary = "Change character's name")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = CharacterDTO.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{id}")
+    public ResponseEntity<CharacterDTO> changeName(@PathVariable("id") Integer id,
                                                    @RequestBody CharacterDTO characterDTO) {
         try {
-            CharacterEntity characterEntity = this.characterService.changeName(name, characterDTO);
+            CharacterEntity characterEntity = this.characterService.changeName(id, characterDTO);
 
             CharacterDTO responseDTO = CharacterDTO.from(characterEntity);
 
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-        } catch (NonexistentCharacterException e) {
+        } catch (NonexistentResourceException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @Operation(summary = "Assign character to zone")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = CharacterDTO.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{characterId}/assign/{zoneId}")
+    public ResponseEntity<Void> assignToZone(@PathVariable("characterId") int characterId,
+                                             @PathVariable("zoneId") int zoneId) {
+
+        try {
+
+            this.assignToZoneService.assignCharacter(characterId, zoneId);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (NonexistentResourceException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

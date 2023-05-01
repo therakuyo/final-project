@@ -96,7 +96,7 @@ public class ItemService {
 
     }
 
-    //    public ItemEntity updateComplete(int id, ItemDTO itemDTO) throws NonexistentResourceException {
+    //    public ItemEntity updateComplete(int id, ItemDTO itemD) throws NonexistentResourceException {
     //
     //        Optional<ItemEntity> optionalItem = this.itemRepository.findById(id);
     //
@@ -109,8 +109,8 @@ public class ItemService {
     //
     //                ItemEntity item = optionalItem.get();
     //
-    //                item.setRarity(itemDTO.getRarity());
-    //                item.setType(itemDTO.getType());
+    //                item.setRarity(itemD.getRarity());
+    //                item.setType(itemD.getType());
     //
     //                WeaponEntity weapon = optionalItem.get();
     //

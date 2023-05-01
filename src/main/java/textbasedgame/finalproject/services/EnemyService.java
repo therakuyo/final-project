@@ -2,8 +2,9 @@ package textbasedgame.finalproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import textbasedgame.finalproject.dtos.EnemyDTO;
 import textbasedgame.finalproject.entities.EnemyEntity;
-import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
+import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.EnemyRepository;
 
 import java.util.Optional;
@@ -15,38 +16,36 @@ public class EnemyService {
     private EnemyRepository enemyRepository;
 
 
-    public EnemyEntity add(String name){
+    public EnemyEntity add(EnemyDTO enemyDTO) {
 
         EnemyEntity enemy = new EnemyEntity();
 
-        enemy.setName(name);
+        enemy.setName(enemyDTO.getName());
 
         return this.enemyRepository.save(enemy);
 
     }
 
-    public EnemyEntity update(String name) throws NonexistentCharacterException {
+    public EnemyEntity update(int id, EnemyDTO enemyDTO) throws NonexistentResourceException {
 
-        Optional<EnemyEntity> enemyOptional = this.enemyRepository.findById(name);
+        Optional<EnemyEntity> enemyOptional = this.enemyRepository.findById(id);
 
-        if (!enemyOptional.isPresent()){
+        if (!enemyOptional.isPresent()) {
 
-            throw new NonexistentCharacterException("Enemy doesn't exist", name);
+            throw new NonexistentResourceException("Enemy doesn't exist", id);
 
         }
 
         EnemyEntity enemy = enemyOptional.get();
-        enemy.setName(name);
+        enemy.setName(enemyDTO.getName());
 
         return this.enemyRepository.save(enemy);
 
-        //make pk id - int
-
     }
 
-    public void delete(String name){
+    public void delete(int id) {
 
-        this.enemyRepository.deleteById(name);
+        this.enemyRepository.deleteById(id);
 
     }
 

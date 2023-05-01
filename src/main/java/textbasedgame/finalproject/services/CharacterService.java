@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
+import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
 
@@ -32,7 +33,7 @@ public class CharacterService {
 
     public Optional<CharacterEntity> findByName(String name) {
 
-        return this.characterRepository.findById(name);
+        return this.characterRepository.findByName(name);
 
     }
 
@@ -44,15 +45,20 @@ public class CharacterService {
 
 
     @Transactional
-    public CharacterEntity add(CharacterDTO characterDTO, int classId) {
+    public CharacterEntity add(CharacterDTO characterDTO, int classId) throws NonexistentResourceException {
 
         CharacterEntity character = new CharacterEntity();
 
         character.setName(characterDTO.getName());
         character.setLevel(characterDTO.getLevel());
-        character.setCharacterClass(this.classRepository.findById(classId).get());
 
-        //TODO - exceptie daca nu exista clasa
+        Optional<ClassEntity> optionalClass = this.classRepository.findById(classId);
+
+        if (!optionalClass.isPresent()){
+            throw new NonexistentResourceException("This class doesn't exist.", classId);
+        }
+
+        character.setCharacterClass(this.classRepository.findById(classId).get());
 
         return this.characterRepository.save(character);
 
@@ -60,12 +66,12 @@ public class CharacterService {
 
 
     @Transactional
-    public CharacterEntity changeName(String name, CharacterDTO characterDTO) throws NonexistentCharacterException {
+    public CharacterEntity changeName(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(name);
+        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(id);
 
         if (!characterOptional.isPresent()) {
-            throw new NonexistentCharacterException("Character doesn't exist", name);
+            throw new NonexistentResourceException("Character doesn't exist", id);
         }
 
         CharacterEntity characterEntity = characterOptional.get();
@@ -73,17 +79,15 @@ public class CharacterService {
 
         return this.characterRepository.save(characterEntity);
 
-        //make pk id - integer
-
     }
 
     @Transactional
-    public CharacterEntity changeClass(String name, CharacterDTO characterDTO) throws NonexistentCharacterException {
+    public CharacterEntity changeClass(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(name);
+        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(id);
 
         if (!characterOptional.isPresent()) {
-            throw new NonexistentCharacterException("Character doesn't exist", name);
+            throw new NonexistentResourceException("Character doesn't exist", id);
         }
 
         CharacterEntity characterEntity = characterOptional.get();
@@ -94,9 +98,9 @@ public class CharacterService {
 
     }
 
-    public void delete(String name) {
+    public void delete(int id) {
 
-        this.characterRepository.deleteById(name);
+        this.characterRepository.deleteById(id);
 
     }
 
