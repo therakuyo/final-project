@@ -19,7 +19,6 @@ public abstract class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     private String type;
 
     @Enumerated(EnumType.STRING)

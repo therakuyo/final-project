@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import textbasedgame.finalproject.dtos.CharacterDTO;
-import textbasedgame.finalproject.dtos.CharacterListDTO;
+import textbasedgame.finalproject.dtos.list_dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.AssignToZoneService;
@@ -46,7 +46,7 @@ public class CharacterResource {
 
     }
 
-    @Operation(summary = "Get character by name")
+    @Operation(summary = "Get all characters")
     @ApiResponse(
         responseCode = "200",
         description = "OK",
@@ -101,11 +101,23 @@ public class CharacterResource {
         description = "NO_CONTENT",
         content = @Content(schema = @Schema(implementation = Void.class))
     )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") int id) {
 
-        this.characterService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+
+            this.characterService.delete(id);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (NonexistentResourceException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
     }
 
@@ -126,9 +138,11 @@ public class CharacterResource {
                                                @Valid @RequestBody CharacterDTO character) {
 
         try {
+
             CharacterEntity characterEntity = this.characterService.add(character, id);
 
             return new ResponseEntity<>(CharacterDTO.from(characterEntity), HttpStatus.CREATED);
+
         } catch (NonexistentResourceException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -148,7 +162,7 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<CharacterDTO> changeName(@PathVariable("id") Integer id,
+    public ResponseEntity<CharacterDTO> changeName(@PathVariable("id") int id,
                                                    @RequestBody CharacterDTO characterDTO) {
         try {
             CharacterEntity characterEntity = this.characterService.changeName(id, characterDTO);

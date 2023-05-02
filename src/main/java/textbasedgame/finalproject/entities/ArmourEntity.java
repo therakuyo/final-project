@@ -9,9 +9,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "armor")
+@Table(name = "armour")
 @PrimaryKeyJoinColumn(name = "id")
-public class ArmorEntity extends ItemEntity{
+public class ArmourEntity extends ItemEntity{
 
     private String name;
 

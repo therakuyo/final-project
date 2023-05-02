@@ -68,13 +68,13 @@ public class CharacterService {
     @Transactional
     public CharacterEntity changeName(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(id);
+        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
 
-        if (!characterOptional.isPresent()) {
+        if (!optionalCharacter.isPresent()) {
             throw new NonexistentResourceException("Character doesn't exist", id);
         }
 
-        CharacterEntity characterEntity = characterOptional.get();
+        CharacterEntity characterEntity = optionalCharacter.get();
         characterEntity.setName(characterDTO.getName());
 
         return this.characterRepository.save(characterEntity);
@@ -84,13 +84,13 @@ public class CharacterService {
     @Transactional
     public CharacterEntity changeClass(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> characterOptional = this.characterRepository.findById(id);
+        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
 
-        if (!characterOptional.isPresent()) {
+        if (!optionalCharacter.isPresent()) {
             throw new NonexistentResourceException("Character doesn't exist", id);
         }
 
-        CharacterEntity characterEntity = characterOptional.get();
+        CharacterEntity characterEntity = optionalCharacter.get();
         characterEntity.getCharacterClass().setClassName(characterDTO.getClassName());
 
         return characterEntity;
@@ -98,7 +98,13 @@ public class CharacterService {
 
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws NonexistentResourceException {
+
+        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
+
+        if (!optionalCharacter.isPresent()){
+            throw new NonexistentResourceException("This character doesn't exist", id);
+        }
 
         this.characterRepository.deleteById(id);
 
