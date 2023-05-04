@@ -17,6 +17,7 @@ import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.ArmourService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,17 +84,11 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") int id) {
+    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
-        try {
+        this.armourService.delete(id);
 
-            this.armourService.delete(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        } catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -110,19 +105,14 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updateComplete(@PathVariable("id") int id, @RequestBody ArmourDTO armourDTO){
+    public ResponseEntity<ArmourDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody ArmourDTO armourDTO)
+        throws NonexistentResourceException {
 
-        try {
+        ArmourEntity armourEntity = this.armourService.updateComplete(id, armourDTO);
 
-            ArmourEntity armourEntity = this.armourService.updateComplete(id, armourDTO);
+        ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
 
-            ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
-
-            return new ResponseEntity<>(responseDTO,HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
 
     }
 
@@ -139,19 +129,14 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updatePartial(@PathVariable("id") int id, @RequestBody ArmourDTO armourDTO){
+    public ResponseEntity<ArmourDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody ArmourDTO armourDTO)
+        throws NonexistentResourceException {
 
-        try {
+        ArmourEntity armourEntity = this.armourService.updatePartial(id, armourDTO);
 
-            ArmourEntity armourEntity = this.armourService.updatePartial(id, armourDTO);
+        ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
 
-            ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
-
-            return new ResponseEntity<>(responseDTO,HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
 
     }
 

@@ -28,24 +28,42 @@ public class EnemyService {
 
     public EnemyEntity update(int id, EnemyDTO enemyDTO) throws NonexistentResourceException {
 
-        Optional<EnemyEntity> enemyOptional = this.enemyRepository.findById(id);
+        Optional<EnemyEntity> optionalEnemy = this.enemyRepository.findById(id);
 
-        if (!enemyOptional.isPresent()) {
+        if (!optionalEnemy.isPresent()) {
 
             throw new NonexistentResourceException("Enemy doesn't exist", id);
 
         }
 
-        EnemyEntity enemy = enemyOptional.get();
+        EnemyEntity enemy = optionalEnemy.get();
         enemy.setName(enemyDTO.getName());
 
         return this.enemyRepository.save(enemy);
 
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws NonexistentResourceException {
 
-        this.enemyRepository.deleteById(id);
+        Optional<EnemyEntity> optionalEnemy = this.enemyRepository.findById(id);
+
+        if (!optionalEnemy.isPresent()) {
+
+            throw new NonexistentResourceException("Enemy doesn't exist", id);
+
+        }
+
+        this.enemyRepository.delete(optionalEnemy.get());
+
+    }
+
+    public EnemyEntity findById(int id) throws NonexistentResourceException {
+        return this.enemyRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", id));
+    }
+
+    public Iterable<EnemyEntity> getAll(){
+
+        return this.enemyRepository.findAll();
 
     }
 

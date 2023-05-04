@@ -10,15 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import textbasedgame.finalproject.dtos.ArmourDTO;
 import textbasedgame.finalproject.dtos.WeaponDTO;
-import textbasedgame.finalproject.dtos.list_dtos.ArmourListDTO;
 import textbasedgame.finalproject.dtos.list_dtos.WeaponListDTO;
 import textbasedgame.finalproject.entities.WeaponEntity;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.WeaponService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,17 +84,11 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") int id){
+    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
-        try {
+        this.weaponService.delete(id);
 
-            this.weaponService.delete(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -112,19 +105,14 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updateComplete(@PathVariable("id") int id, @RequestBody WeaponDTO weaponDTO){
+    public ResponseEntity<WeaponDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody WeaponDTO weaponDTO)
+        throws NonexistentResourceException {
 
-        try {
+        WeaponEntity weapon = this.weaponService.updateComplete(id, weaponDTO);
 
-            WeaponEntity weapon = this.weaponService.updateComplete(id, weaponDTO);
+        WeaponDTO responseDTO = WeaponDTO.from(weapon);
 
-            WeaponDTO responseDTO = WeaponDTO.from(weapon);
-
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 
@@ -141,19 +129,14 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updatePartial(@PathVariable("id") int id, @RequestBody WeaponDTO weaponDTO){
+    public ResponseEntity<WeaponDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody WeaponDTO weaponDTO)
+        throws NonexistentResourceException {
 
-        try {
+        WeaponEntity weapon = this.weaponService.updatePartial(id, weaponDTO);
 
-            WeaponEntity weapon = this.weaponService.updatePartial(id, weaponDTO);
+        WeaponDTO responseDTO = WeaponDTO.from(weapon);
 
-            WeaponDTO responseDTO = WeaponDTO.from(weapon);
-
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 

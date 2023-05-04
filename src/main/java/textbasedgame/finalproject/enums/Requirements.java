@@ -2,5 +2,5 @@ package textbasedgame.finalproject.enums;
 
 public enum Requirements {
 
-    two_handed, one_handed
+    TWO_HANDED, ONE_HANDED
 }

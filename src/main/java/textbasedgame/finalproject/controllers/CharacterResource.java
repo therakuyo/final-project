@@ -13,17 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.dtos.list_dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
+import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.AssignToZoneService;
 import textbasedgame.finalproject.services.CharacterService;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/characters")
@@ -38,20 +37,13 @@ public class CharacterResource {
     private AssignToZoneService assignToZoneService;
 
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException e) {
-
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-    }
-
     @Operation(summary = "Get all characters")
     @ApiResponse(
         responseCode = "200",
         description = "OK",
         content = @Content(schema = @Schema(implementation = CharacterListDTO.class))
     )
+    @GetMapping
     public ResponseEntity<CharacterListDTO> getAll() {
 
         Iterable<CharacterEntity> characters = this.characterService.getAll();
@@ -81,14 +73,11 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @GetMapping("/{name}")
-    public ResponseEntity<CharacterDTO> getByName(@NotEmpty @PathVariable("name") String name) {
+    public ResponseEntity<CharacterDTO> getByName(@NotEmpty @PathVariable("name") String name)
+        throws NonexistentCharacterException {
 
-        Optional<CharacterEntity> optionalCharacter = this.characterService.findByName(name);
-        if (!optionalCharacter.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        CharacterEntity characterEntity = this.characterService.findByName(name);
 
-        CharacterEntity characterEntity = optionalCharacter.get();
         CharacterDTO characterDTO = CharacterDTO.from(characterEntity);
 
         return new ResponseEntity<>(characterDTO, HttpStatus.OK);
@@ -107,17 +96,11 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") int id) {
+    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
-        try {
+        this.characterService.delete(id);
 
-            this.characterService.delete(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        } catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -133,19 +116,14 @@ public class CharacterResource {
         description = "NOT FOUND",
         content = @Content(schema = @Schema(implementation = Void.class))
     )
-    @PostMapping
+    @PostMapping("/{id}")
     public ResponseEntity<CharacterDTO> create(@Min(1) @PathVariable int id,
-                                               @Valid @RequestBody CharacterDTO character) {
+                                               @Valid @RequestBody CharacterDTO character)
+        throws NonexistentResourceException {
 
-        try {
+        CharacterEntity characterEntity = this.characterService.add(character, id);
 
-            CharacterEntity characterEntity = this.characterService.add(character, id);
-
-            return new ResponseEntity<>(CharacterDTO.from(characterEntity), HttpStatus.CREATED);
-
-        } catch (NonexistentResourceException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(CharacterDTO.from(characterEntity), HttpStatus.CREATED);
 
     }
 
@@ -162,17 +140,15 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<CharacterDTO> changeName(@PathVariable("id") int id,
-                                                   @RequestBody CharacterDTO characterDTO) {
-        try {
-            CharacterEntity characterEntity = this.characterService.changeName(id, characterDTO);
+    public ResponseEntity<CharacterDTO> changeName(@Min(1) @PathVariable("id") int id,
+                                                   @Valid @RequestBody CharacterDTO characterDTO)
+        throws NonexistentResourceException {
 
-            CharacterDTO responseDTO = CharacterDTO.from(characterEntity);
+        CharacterEntity characterEntity = this.characterService.changeName(id, characterDTO);
 
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-        } catch (NonexistentResourceException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        CharacterDTO responseDTO = CharacterDTO.from(characterEntity);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 
@@ -180,7 +156,7 @@ public class CharacterResource {
     @ApiResponse(
         responseCode = "200",
         description = "OK",
-        content = @Content(schema = @Schema(implementation = CharacterDTO.class))
+        content = @Content(schema = @Schema(implementation = Void.class))
     )
     @ApiResponse(
         responseCode = "404",
@@ -188,17 +164,12 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{characterId}/assign/{zoneId}")
-    public ResponseEntity<Void> assignToZone(@PathVariable("characterId") int characterId,
-                                             @PathVariable("zoneId") int zoneId) {
+    public ResponseEntity<Void> assignToZone(@Min(1) @PathVariable("characterId") int characterId,
+                                             @Min(1) @PathVariable("zoneId") int zoneId) throws NonexistentResourceException {
 
-        try {
+        this.assignToZoneService.assignCharacter(characterId, zoneId);
 
-            this.assignToZoneService.assignCharacter(characterId, zoneId);
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (NonexistentResourceException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

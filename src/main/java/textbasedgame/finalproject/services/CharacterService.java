@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
@@ -31,10 +32,14 @@ public class CharacterService {
 //        return this.characterRepository.findByClassEntity_ClassName(className);
 //    }
 
-    public Optional<CharacterEntity> findByName(String name) {
+    public CharacterEntity findByName(String name) throws NonexistentCharacterException {
 
-        return this.characterRepository.findByName(name);
+        return this.characterRepository.findByName(name).orElseThrow(() -> new NonexistentCharacterException("Character doesn't exist", name));
 
+    }
+
+    public CharacterEntity findById(int id) throws NonexistentResourceException {
+        return this.characterRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
     }
 
     public Iterable<CharacterEntity> getAll() {
@@ -55,7 +60,7 @@ public class CharacterService {
         Optional<ClassEntity> optionalClass = this.classRepository.findById(classId);
 
         if (!optionalClass.isPresent()){
-            throw new NonexistentResourceException("This class doesn't exist.", classId);
+            throw new NonexistentResourceException("Class doesn't exist.", classId);
         }
 
         character.setCharacterClass(this.classRepository.findById(classId).get());
@@ -103,10 +108,10 @@ public class CharacterService {
         Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
 
         if (!optionalCharacter.isPresent()){
-            throw new NonexistentResourceException("This character doesn't exist", id);
+            throw new NonexistentResourceException("Character doesn't exist", id);
         }
 
-        this.characterRepository.deleteById(id);
+        this.characterRepository.delete(optionalCharacter.get());
 
     }
 

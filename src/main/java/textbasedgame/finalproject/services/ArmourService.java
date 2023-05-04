@@ -43,7 +43,7 @@ public class ArmourService {
         Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
 
         if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("This armour doesn't exist", id);
+            throw new NonexistentResourceException("Armour doesn't exist", id);
         }
 
         this.itemRepository.delete(optionalArmour.get());
@@ -57,7 +57,7 @@ public class ArmourService {
         Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
 
         if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("This armour doesn't exist", id);
+            throw new NonexistentResourceException("Armour doesn't exist", id);
         }
 
         ArmourEntity armour = optionalArmour.get();
@@ -79,7 +79,7 @@ public class ArmourService {
         Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
 
         if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("This armour doesn't exist", id);
+            throw new NonexistentResourceException("Armour doesn't exist", id);
         }
 
         ArmourEntity armour = optionalArmour.get();
@@ -115,6 +115,10 @@ public class ArmourService {
 
     public Iterable<ArmourEntity> getAllArmour() {
         return this.armourRepository.findAll();
+    }
+
+    public ArmourEntity findById(int id) throws NonexistentResourceException {
+        return this.armourRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
     }
 
 }

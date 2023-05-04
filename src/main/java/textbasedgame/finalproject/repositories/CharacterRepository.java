@@ -2,9 +2,7 @@ package textbasedgame.finalproject.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.entities.ClassEntity;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

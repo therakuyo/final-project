@@ -17,6 +17,7 @@ import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.JewelleryService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,17 +84,11 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@NotEmpty @PathVariable("id") int id){
+    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
-        try {
+        this.jewelleryService.delete(id);
 
-            this.jewelleryService.delete(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -110,19 +105,14 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updateComplete(@PathVariable("id") int id, @RequestBody JewelleryDTO jewelleryDTO){
+    public ResponseEntity<JewelleryDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody JewelleryDTO jewelleryDTO)
+        throws NonexistentResourceException {
 
-        try {
+        JewelleryEntity jewelleryEntity = this.jewelleryService.updateComplete(id, jewelleryDTO);
 
-            JewelleryEntity jewelleryEntity = this.jewelleryService.updateComplete(id, jewelleryDTO);
+        JewelleryDTO responseDTO = JewelleryDTO.from(jewelleryEntity);
 
-            JewelleryDTO responseDTO = JewelleryDTO.from(jewelleryEntity);
-
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 
@@ -139,19 +129,14 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updatePartial(@PathVariable("id") int id, @RequestBody JewelleryDTO jewelleryDTO){
+    public ResponseEntity<JewelleryDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody JewelleryDTO jewelleryDTO)
+        throws NonexistentResourceException {
 
-        try {
+        JewelleryEntity jewelleryEntity = this.jewelleryService.updatePartial(id, jewelleryDTO);
 
-            JewelleryEntity jewelleryEntity = this.jewelleryService.updatePartial(id, jewelleryDTO);
+        JewelleryDTO responseDTO = JewelleryDTO.from(jewelleryEntity);
 
-            JewelleryDTO responseDTO = JewelleryDTO.from(jewelleryEntity);
-
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-        }catch (NonexistentResourceException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 

@@ -45,7 +45,7 @@ public class JewelleryService {
         Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
 
         if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("This jewellery doesn't exist", id);
+            throw new NonexistentResourceException("Jewellery doesn't exist", id);
         }
 
         this.itemRepository.delete(optionalJewellery.get());
@@ -59,7 +59,7 @@ public class JewelleryService {
         Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
 
         if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("This jewellery doesn't exist", id);
+            throw new NonexistentResourceException("Jewellery doesn't exist", id);
         }
 
         JewelleryEntity jewellery = optionalJewellery.get();
@@ -83,7 +83,7 @@ public class JewelleryService {
         Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
 
         if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("This jewellery doesn't exist", id);
+            throw new NonexistentResourceException("Jewellery doesn't exist", id);
         }
 
         JewelleryEntity jewellery = optionalJewellery.get();
@@ -127,6 +127,10 @@ public class JewelleryService {
 
     public Iterable<JewelleryEntity> getAllJewellery() {
         return this.jewelleryRepository.findAll();
+    }
+
+    public JewelleryEntity findById(int id) throws NonexistentResourceException {
+        return this.jewelleryRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
     }
 
 }

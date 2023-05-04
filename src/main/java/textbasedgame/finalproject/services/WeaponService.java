@@ -43,7 +43,7 @@ public class WeaponService {
         Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
 
         if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("This weapon doesn't exist", id);
+            throw new NonexistentResourceException("Weapon doesn't exist", id);
         }
 
         this.itemRepository.delete(optionalWeapon.get());
@@ -57,7 +57,7 @@ public class WeaponService {
         Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
 
         if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("This weapon doesn't exist", id);
+            throw new NonexistentResourceException("Weapon doesn't exist", id);
         }
 
         WeaponEntity weapon = optionalWeapon.get();
@@ -79,7 +79,7 @@ public class WeaponService {
         Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
 
         if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("This weapon doesn't exist", id);
+            throw new NonexistentResourceException("Weapon doesn't exist", id);
         }
 
         WeaponEntity weapon = optionalWeapon.get();
@@ -115,6 +115,10 @@ public class WeaponService {
 
     public Iterable<WeaponEntity> getAllWeapons() {
         return this.weaponRepository.findAll();
+    }
+
+    public WeaponEntity findById(int id) throws NonexistentResourceException {
+        return this.weaponRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
     }
 
 }
