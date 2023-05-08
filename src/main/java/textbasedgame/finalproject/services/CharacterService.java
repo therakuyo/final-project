@@ -28,18 +28,20 @@ public class CharacterService {
         return this.characterRepository.findByLevel(level);
     }
 
-//    public List<CharacterEntity> findByClass(String className) {
-//        return this.characterRepository.findByClassEntity_ClassName(className);
-//    }
+    //    public List<CharacterEntity> findByClass(String className) {
+    //        return this.characterRepository.findByClassEntity_ClassName(className);
+    //    }
 
     public CharacterEntity findByName(String name) throws NonexistentCharacterException {
 
-        return this.characterRepository.findByName(name).orElseThrow(() -> new NonexistentCharacterException("Character doesn't exist", name));
+        return this.characterRepository.findByName(name)
+            .orElseThrow(() -> new NonexistentCharacterException("Character doesn't exist", name));
 
     }
 
     public CharacterEntity findById(int id) throws NonexistentResourceException {
-        return this.characterRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
+        return this.characterRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
     }
 
     public Iterable<CharacterEntity> getAll() {
@@ -57,13 +59,10 @@ public class CharacterService {
         character.setName(characterDTO.getName());
         character.setLevel(characterDTO.getLevel());
 
-        Optional<ClassEntity> optionalClass = this.classRepository.findById(classId);
+        ClassEntity foundClass = this.classRepository.findById(classId)
+            .orElseThrow(() -> new NonexistentResourceException("Class doesn't exist.", classId));
 
-        if (!optionalClass.isPresent()){
-            throw new NonexistentResourceException("Class doesn't exist.", classId);
-        }
-
-        character.setCharacterClass(this.classRepository.findById(classId).get());
+        character.setCharacterClass(foundClass);
 
         return this.characterRepository.save(character);
 
@@ -73,16 +72,12 @@ public class CharacterService {
     @Transactional
     public CharacterEntity changeName(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
+        CharacterEntity character = this.characterRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
 
-        if (!optionalCharacter.isPresent()) {
-            throw new NonexistentResourceException("Character doesn't exist", id);
-        }
+        character.setName(characterDTO.getName());
 
-        CharacterEntity characterEntity = optionalCharacter.get();
-        characterEntity.setName(characterDTO.getName());
-
-        return this.characterRepository.save(characterEntity);
+        return this.characterRepository.save(character);
 
     }
 
@@ -105,13 +100,10 @@ public class CharacterService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
+        CharacterEntity character = this.characterRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
 
-        if (!optionalCharacter.isPresent()){
-            throw new NonexistentResourceException("Character doesn't exist", id);
-        }
-
-        this.characterRepository.delete(optionalCharacter.get());
+        this.characterRepository.delete(character);
 
     }
 

@@ -3,6 +3,7 @@ package textbasedgame.finalproject.dtos;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import textbasedgame.finalproject.entities.ArmourEntity;
+import textbasedgame.finalproject.enums.ItemType;
 import textbasedgame.finalproject.enums.Rarity;
 import textbasedgame.finalproject.validators.NoDigits;
 
@@ -19,9 +20,7 @@ import java.util.List;
 @Slf4j
 public class ArmourDTO {
 
-    @NotEmpty
-    @NoDigits
-    private String type;
+    private ItemType type;
 
     private Rarity rarity;
 

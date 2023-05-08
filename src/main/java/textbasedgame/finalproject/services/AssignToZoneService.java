@@ -2,6 +2,7 @@ package textbasedgame.finalproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.entities.ZoneEntity;
@@ -10,7 +11,6 @@ import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.EnemyRepository;
 import textbasedgame.finalproject.repositories.ZoneRepository;
 
-import java.util.Optional;
 
 @Service
 public class AssignToZoneService {
@@ -25,23 +25,15 @@ public class AssignToZoneService {
     private ZoneRepository zoneRepository;
 
 
+    @Transactional
     public void assignCharacter(int characterId, int zoneId)
         throws NonexistentResourceException {
 
-        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(characterId);
+        CharacterEntity character = this.characterRepository.findById(characterId)
+            .orElseThrow(() -> new NonexistentResourceException("This character doesn't exist", characterId));
 
-        if (!optionalCharacter.isPresent()) {
-            throw new NonexistentResourceException("This character doesn't exist", characterId);
-        }
-
-        Optional<ZoneEntity> optionalZone = this.zoneRepository.findById(zoneId);
-
-        if (!optionalZone.isPresent()) {
-            throw new NonexistentResourceException("This zone doesn't exist", zoneId);
-        }
-
-        CharacterEntity character = optionalCharacter.get();
-        ZoneEntity zone = optionalZone.get();
+        ZoneEntity zone = this.zoneRepository.findById(zoneId)
+            .orElseThrow(() -> new NonexistentResourceException("This zone doesn't exist", zoneId));
 
         character.getCharacterZones().add(zone);
 
@@ -50,23 +42,15 @@ public class AssignToZoneService {
     }
 
 
+    @Transactional
     public void assignEnemy(int enemyId, int zoneId)
         throws NonexistentResourceException {
 
-        Optional<EnemyEntity> optionalEnemy = this.enemyRepository.findById(enemyId);
+        EnemyEntity enemy = this.enemyRepository.findById(enemyId)
+            .orElseThrow(() -> new NonexistentResourceException("This character doesn't exist", enemyId));
 
-        if (!optionalEnemy.isPresent()) {
-            throw new NonexistentResourceException("This character doesn't exist", enemyId);
-        }
-
-        Optional<ZoneEntity> optionalZone = this.zoneRepository.findById(zoneId);
-
-        if (!optionalZone.isPresent()) {
-            throw new NonexistentResourceException("This zone doesn't exist", zoneId);
-        }
-
-        EnemyEntity enemy = optionalEnemy.get();
-        ZoneEntity zone = optionalZone.get();
+        ZoneEntity zone = this.zoneRepository.findById(zoneId)
+            .orElseThrow(() -> new NonexistentResourceException("This zone doesn't exist", zoneId));
 
         enemy.getEnemyZones().add(zone);
 

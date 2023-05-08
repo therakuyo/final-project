@@ -32,13 +32,13 @@ public class WebSecurityBearerToken {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
 
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 
@@ -60,7 +60,7 @@ public class WebSecurityBearerToken {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
             .cors().and().csrf().disable()
@@ -80,5 +80,7 @@ public class WebSecurityBearerToken {
         return http.build();
 
     }
+
+    //todo - not working
 
 }

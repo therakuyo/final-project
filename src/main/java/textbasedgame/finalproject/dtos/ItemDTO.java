@@ -1,6 +1,7 @@
 package textbasedgame.finalproject.dtos;
 
 import lombok.*;
+import textbasedgame.finalproject.enums.ItemType;
 import textbasedgame.finalproject.enums.Rarity;
 
 @Getter
@@ -10,7 +11,7 @@ import textbasedgame.finalproject.enums.Rarity;
 @NoArgsConstructor
 public class ItemDTO {
 
-    private String type;
+    private ItemType type;
 
     private Rarity rarity;
 

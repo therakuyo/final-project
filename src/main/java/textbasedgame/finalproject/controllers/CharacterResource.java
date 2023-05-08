@@ -20,7 +20,6 @@ import textbasedgame.finalproject.services.CharacterService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @GetMapping("/{name}")
-    public ResponseEntity<CharacterDTO> getByName(@NotEmpty @PathVariable("name") String name)
+    public ResponseEntity<CharacterDTO> getByName(@Valid @PathVariable("name") String name)
         throws NonexistentCharacterException {
 
         CharacterEntity characterEntity = this.characterService.findByName(name);
@@ -165,7 +164,8 @@ public class CharacterResource {
     )
     @PatchMapping("/{characterId}/assign/{zoneId}")
     public ResponseEntity<Void> assignToZone(@Min(1) @PathVariable("characterId") int characterId,
-                                             @Min(1) @PathVariable("zoneId") int zoneId) throws NonexistentResourceException {
+                                             @Min(1) @PathVariable("zoneId") int zoneId)
+        throws NonexistentResourceException {
 
         this.assignToZoneService.assignCharacter(characterId, zoneId);
 

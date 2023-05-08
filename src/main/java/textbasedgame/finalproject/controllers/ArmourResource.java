@@ -39,13 +39,13 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = ArmourListDTO.class))
     )
     @GetMapping
-    public ResponseEntity<ArmourListDTO> getAll(){
+    public ResponseEntity<ArmourListDTO> getAll() {
 
         Iterable<ArmourEntity> armour = this.armourService.getAllArmour();
 
         List<ArmourDTO> armourDTOS = new ArrayList<>();
 
-        for (ArmourEntity armourEntity : armour){
+        for (ArmourEntity armourEntity : armour) {
             armourDTOS.add(ArmourDTO.from(armourEntity));
         }
 
@@ -63,7 +63,7 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = ArmourDTO.class))
     )
     @PostMapping
-    public ResponseEntity<ArmourDTO> create(@Valid @RequestBody ArmourDTO armour){
+    public ResponseEntity<ArmourDTO> create(@Valid @RequestBody ArmourDTO armour) {
 
         ArmourEntity armourEntity = this.armourService.add(armour);
 
@@ -105,14 +105,15 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody ArmourDTO armourDTO)
+    public ResponseEntity<ArmourDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+                                                    @Valid @RequestBody ArmourDTO armourDTO)
         throws NonexistentResourceException {
 
         ArmourEntity armourEntity = this.armourService.updateComplete(id, armourDTO);
 
         ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
 
-        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 
@@ -129,14 +130,14 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody ArmourDTO armourDTO)
+    public ResponseEntity<ArmourDTO> updatePartial(@Min(1) @PathVariable("id") int id, @RequestBody ArmourDTO armourDTO)
         throws NonexistentResourceException {
 
         ArmourEntity armourEntity = this.armourService.updatePartial(id, armourDTO);
 
         ArmourDTO responseDTO = ArmourDTO.from(armourEntity);
 
-        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 

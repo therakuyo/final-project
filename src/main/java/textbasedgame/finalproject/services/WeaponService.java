@@ -10,7 +10,6 @@ import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.ItemRepository;
 import textbasedgame.finalproject.repositories.WeaponRepository;
 
-import java.util.Optional;
 
 @Service
 public class WeaponService {
@@ -40,13 +39,10 @@ public class WeaponService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
+        WeaponEntity weapon = this.weaponRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
 
-        if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("Weapon doesn't exist", id);
-        }
-
-        this.itemRepository.delete(optionalWeapon.get());
+        this.itemRepository.delete(weapon);
 
     }
 
@@ -54,13 +50,8 @@ public class WeaponService {
     @Transactional
     public WeaponEntity updateComplete(int id, WeaponDTO weaponDTO) throws NonexistentResourceException {
 
-        Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
-
-        if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("Weapon doesn't exist", id);
-        }
-
-        WeaponEntity weapon = optionalWeapon.get();
+        WeaponEntity weapon = this.weaponRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
 
         weapon.setType(weaponDTO.getType());
         weapon.setRarity(weaponDTO.getRarity());
@@ -76,13 +67,8 @@ public class WeaponService {
     @Transactional
     public WeaponEntity updatePartial(int id, WeaponDTO weaponDTO) throws NonexistentResourceException {
 
-        Optional<WeaponEntity> optionalWeapon = this.weaponRepository.findById(id);
-
-        if (!optionalWeapon.isPresent()) {
-            throw new NonexistentResourceException("Weapon doesn't exist", id);
-        }
-
-        WeaponEntity weapon = optionalWeapon.get();
+        WeaponEntity weapon = this.weaponRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
 
         if (weaponDTO.getName() != null) {
             weapon.setName(weaponDTO.getName());
@@ -118,7 +104,8 @@ public class WeaponService {
     }
 
     public WeaponEntity findById(int id) throws NonexistentResourceException {
-        return this.weaponRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
+        return this.weaponRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Weapon doesn't exist", id));
     }
 
 }

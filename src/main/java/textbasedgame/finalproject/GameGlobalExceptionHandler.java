@@ -26,7 +26,7 @@ public class GameGlobalExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(Exception e){
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception e) {
 
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -34,7 +34,7 @@ public class GameGlobalExceptionHandler {
 
 
     @ExceptionHandler(NonexistentResourceException.class)
-    public ResponseEntity<ErrorResponse> handleNonexistentResourceException(NonexistentResourceException e){
+    public ResponseEntity<ErrorResponse> handleNonexistentResourceException(NonexistentResourceException e) {
 
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -43,7 +43,7 @@ public class GameGlobalExceptionHandler {
 
 
     @ExceptionHandler(NonexistentCharacterException.class)
-    public ResponseEntity<ErrorResponse> handleNonexistentCharacterException(NonexistentCharacterException e){
+    public ResponseEntity<ErrorResponse> handleNonexistentCharacterException(NonexistentCharacterException e) {
 
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);

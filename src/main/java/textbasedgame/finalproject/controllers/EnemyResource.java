@@ -42,13 +42,13 @@ public class EnemyResource {
         content = @Content(schema = @Schema(implementation = EnemyListDTO.class))
     )
     @GetMapping
-    public ResponseEntity<EnemyListDTO> getAll(){
+    public ResponseEntity<EnemyListDTO> getAll() {
 
         Iterable<EnemyEntity> enemies = this.enemyService.getAll();
 
         List<EnemyDTO> enemyDTOS = new ArrayList<>();
 
-        for (EnemyEntity enemyEntity : enemies){
+        for (EnemyEntity enemyEntity : enemies) {
             enemyDTOS.add(EnemyDTO.from(enemyEntity));
         }
 
@@ -103,7 +103,7 @@ public class EnemyResource {
     }
 
 
-    @Operation(summary = "Create character")
+    @Operation(summary = "Create enemy")
     @ApiResponse(
         responseCode = "201",
         description = "OK",
@@ -115,7 +115,7 @@ public class EnemyResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PostMapping()
-    public ResponseEntity<EnemyDTO> create(@Valid @RequestBody EnemyDTO enemyDTO){
+    public ResponseEntity<EnemyDTO> create(@Valid @RequestBody EnemyDTO enemyDTO) {
 
         EnemyEntity enemyEntity = this.enemyService.add(enemyDTO);
 

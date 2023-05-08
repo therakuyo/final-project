@@ -7,7 +7,6 @@ import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.EnemyRepository;
 
-import java.util.Optional;
 
 @Service
 public class EnemyService {
@@ -28,15 +27,9 @@ public class EnemyService {
 
     public EnemyEntity update(int id, EnemyDTO enemyDTO) throws NonexistentResourceException {
 
-        Optional<EnemyEntity> optionalEnemy = this.enemyRepository.findById(id);
+        EnemyEntity enemy = this.enemyRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", id));
 
-        if (!optionalEnemy.isPresent()) {
-
-            throw new NonexistentResourceException("Enemy doesn't exist", id);
-
-        }
-
-        EnemyEntity enemy = optionalEnemy.get();
         enemy.setName(enemyDTO.getName());
 
         return this.enemyRepository.save(enemy);
@@ -45,23 +38,19 @@ public class EnemyService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<EnemyEntity> optionalEnemy = this.enemyRepository.findById(id);
+        EnemyEntity enemy = this.enemyRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", id));
 
-        if (!optionalEnemy.isPresent()) {
-
-            throw new NonexistentResourceException("Enemy doesn't exist", id);
-
-        }
-
-        this.enemyRepository.delete(optionalEnemy.get());
+        this.enemyRepository.delete(enemy);
 
     }
 
     public EnemyEntity findById(int id) throws NonexistentResourceException {
-        return this.enemyRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", id));
+        return this.enemyRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", id));
     }
 
-    public Iterable<EnemyEntity> getAll(){
+    public Iterable<EnemyEntity> getAll() {
 
         return this.enemyRepository.findAll();
 

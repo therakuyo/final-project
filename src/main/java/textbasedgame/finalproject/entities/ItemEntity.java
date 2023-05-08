@@ -1,6 +1,7 @@
 package textbasedgame.finalproject.entities;
 
 import lombok.*;
+import textbasedgame.finalproject.enums.ItemType;
 import textbasedgame.finalproject.enums.Rarity;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public abstract class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String type;
+    private ItemType type;
 
     @Enumerated(EnumType.STRING)
     private Rarity rarity;

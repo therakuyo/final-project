@@ -2,7 +2,9 @@ package textbasedgame.finalproject.dtos;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import textbasedgame.finalproject.entities.JewelleryEntity;
+import textbasedgame.finalproject.enums.ItemType;
 import textbasedgame.finalproject.enums.Rarity;
 import textbasedgame.finalproject.validators.NoDigits;
 
@@ -18,9 +20,7 @@ import java.util.List;
 @Slf4j
 public class JewelleryDTO {
 
-    @NotEmpty
-    @NoDigits
-    private String type;
+    private ItemType type;
 
     private Rarity rarity;
 
@@ -28,12 +28,16 @@ public class JewelleryDTO {
     @NoDigits
     private String name;
 
+    @Nullable
     private Integer attackDamage;
 
+    @Nullable
     private Integer magicDamage;
 
+    @Nullable
     private Integer healthPoints;
 
+    @Nullable
     private Integer resistance;
 
 

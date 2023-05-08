@@ -39,13 +39,13 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = WeaponListDTO.class))
     )
     @GetMapping
-    public ResponseEntity<WeaponListDTO> getAll(){
+    public ResponseEntity<WeaponListDTO> getAll() {
 
         Iterable<WeaponEntity> weapons = this.weaponService.getAllWeapons();
 
         List<WeaponDTO> weaponDTOS = new ArrayList<>();
 
-        for (WeaponEntity weaponEntity : weapons){
+        for (WeaponEntity weaponEntity : weapons) {
             weaponDTOS.add(WeaponDTO.from(weaponEntity));
         }
 
@@ -63,7 +63,7 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = WeaponDTO.class))
     )
     @PostMapping
-    public ResponseEntity<WeaponDTO> create(@Valid @RequestBody WeaponDTO weaponDTO){
+    public ResponseEntity<WeaponDTO> create(@Valid @RequestBody WeaponDTO weaponDTO) {
 
         WeaponEntity weapon = this.weaponService.add(weaponDTO);
 
@@ -105,7 +105,8 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody WeaponDTO weaponDTO)
+    public ResponseEntity<WeaponDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+                                                    @Valid @RequestBody WeaponDTO weaponDTO)
         throws NonexistentResourceException {
 
         WeaponEntity weapon = this.weaponService.updateComplete(id, weaponDTO);
@@ -129,7 +130,7 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody WeaponDTO weaponDTO)
+    public ResponseEntity<WeaponDTO> updatePartial(@Min(1) @PathVariable("id") int id, @RequestBody WeaponDTO weaponDTO)
         throws NonexistentResourceException {
 
         WeaponEntity weapon = this.weaponService.updatePartial(id, weaponDTO);

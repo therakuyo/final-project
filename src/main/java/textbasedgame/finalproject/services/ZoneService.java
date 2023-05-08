@@ -17,6 +17,19 @@ public class ZoneService {
     private ZoneRepository zoneRepository;
 
 
+    public ZoneEntity findById(int id) throws NonexistentResourceException {
+
+        return this.zoneRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Zone doesn't exist", id));
+
+    }
+
+    public Iterable<ZoneEntity> getAll() {
+
+        return this.zoneRepository.findAll();
+
+    }
+
     @Transactional
     public ZoneEntity add(ZoneDTO zoneDTO) {
 
@@ -29,22 +42,20 @@ public class ZoneService {
 
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws NonexistentResourceException {
 
-        this.zoneRepository.deleteById(id);
+        ZoneEntity zone = this.zoneRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Zone doesn't exist", id));
+
+        this.zoneRepository.delete(zone);
 
     }
 
     @Transactional
     public ZoneEntity updateComplete(int id, ZoneDTO zoneDTO) throws NonexistentResourceException {
 
-        Optional<ZoneEntity> optionalZone = this.zoneRepository.findById(id);
-
-        if (!optionalZone.isPresent()) {
-            throw new NonexistentResourceException("This zone doesn't exist", id);
-        }
-
-        ZoneEntity zone = optionalZone.get();
+        ZoneEntity zone = this.zoneRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Zone doesn't exist", id));
 
         zone.setZoneName(zoneDTO.getZoneName());
         zone.setDifficulty(zoneDTO.getDifficulty());
@@ -57,13 +68,8 @@ public class ZoneService {
     @Transactional
     public ZoneEntity updatePartial(int id, ZoneDTO zoneDTO) throws NonexistentResourceException {
 
-        Optional<ZoneEntity> optionalZone = this.zoneRepository.findById(id);
-
-        if (!optionalZone.isPresent()) {
-            throw new NonexistentResourceException("This zone doesn't exist", id);
-        }
-
-        ZoneEntity zone = optionalZone.get();
+        ZoneEntity zone = this.zoneRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Zone doesn't exist", id));
 
         if (zoneDTO.getZoneName() != null) {
             zone.setZoneName(zoneDTO.getZoneName());

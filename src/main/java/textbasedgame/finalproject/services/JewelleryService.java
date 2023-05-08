@@ -28,10 +28,23 @@ public class JewelleryService {
         JewelleryEntity jewellery = new JewelleryEntity();
 
         jewellery.setName(jewelleryDTO.getName());
-        jewellery.setAttackDamage(jewelleryDTO.getAttackDamage());
-        jewellery.setMagicDamage(jewelleryDTO.getMagicDamage());
-        jewellery.setHealthPoints(jewelleryDTO.getHealthPoints());
-        jewellery.setResistance(jewelleryDTO.getResistance());
+
+        if (jewelleryDTO.getAttackDamage() != null) {
+            jewellery.setAttackDamage(jewelleryDTO.getAttackDamage());
+        }
+
+        if (jewelleryDTO.getMagicDamage() != null) {
+            jewellery.setMagicDamage(jewelleryDTO.getMagicDamage());
+        }
+
+        if (jewelleryDTO.getHealthPoints() != null) {
+            jewellery.setHealthPoints(jewelleryDTO.getHealthPoints());
+        }
+
+        if (jewelleryDTO.getResistance() != null) {
+            jewellery.setResistance(jewelleryDTO.getResistance());
+        }
+
         jewellery.setType(jewelleryDTO.getType());
         jewellery.setRarity(jewelleryDTO.getRarity());
 
@@ -42,13 +55,10 @@ public class JewelleryService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
+        JewelleryEntity jewellery = this.jewelleryRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
 
-        if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("Jewellery doesn't exist", id);
-        }
-
-        this.itemRepository.delete(optionalJewellery.get());
+        this.itemRepository.delete(jewellery);
 
     }
 
@@ -56,21 +66,28 @@ public class JewelleryService {
     @Transactional
     public JewelleryEntity updateComplete(int id, JewelleryDTO jewelleryDTO) throws NonexistentResourceException {
 
-        Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
-
-        if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("Jewellery doesn't exist", id);
-        }
-
-        JewelleryEntity jewellery = optionalJewellery.get();
+        JewelleryEntity jewellery = this.jewelleryRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
 
         jewellery.setType(jewelleryDTO.getType());
         jewellery.setRarity(jewelleryDTO.getRarity());
         jewellery.setName(jewelleryDTO.getName());
-        jewellery.setHealthPoints(jewelleryDTO.getHealthPoints());
-        jewellery.setResistance(jewelleryDTO.getResistance());
-        jewellery.setAttackDamage(jewelleryDTO.getAttackDamage());
-        jewellery.setMagicDamage(jewelleryDTO.getMagicDamage());
+
+        if (jewelleryDTO.getAttackDamage() != null) {
+            jewellery.setAttackDamage(jewelleryDTO.getAttackDamage());
+        }
+
+        if (jewelleryDTO.getMagicDamage() != null) {
+            jewellery.setMagicDamage(jewelleryDTO.getMagicDamage());
+        }
+
+        if (jewelleryDTO.getHealthPoints() != null) {
+            jewellery.setHealthPoints(jewelleryDTO.getHealthPoints());
+        }
+
+        if (jewelleryDTO.getResistance() != null) {
+            jewellery.setResistance(jewelleryDTO.getResistance());
+        }
 
         return this.itemRepository.save(jewellery);
 
@@ -80,13 +97,8 @@ public class JewelleryService {
     @Transactional
     public JewelleryEntity updatePartial(int id, JewelleryDTO jewelleryDTO) throws NonexistentResourceException {
 
-        Optional<JewelleryEntity> optionalJewellery = this.jewelleryRepository.findById(id);
-
-        if (!optionalJewellery.isPresent()) {
-            throw new NonexistentResourceException("Jewellery doesn't exist", id);
-        }
-
-        JewelleryEntity jewellery = optionalJewellery.get();
+        JewelleryEntity jewellery = this.jewelleryRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
 
         if (jewelleryDTO.getName() != null) {
             jewellery.setName(jewelleryDTO.getName());
@@ -130,7 +142,8 @@ public class JewelleryService {
     }
 
     public JewelleryEntity findById(int id) throws NonexistentResourceException {
-        return this.jewelleryRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
+        return this.jewelleryRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Jewellery doesn't exist", id));
     }
 
 }

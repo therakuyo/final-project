@@ -10,7 +10,6 @@ import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.ArmourRepository;
 import textbasedgame.finalproject.repositories.ItemRepository;
 
-import java.util.Optional;
 
 @Service
 public class ArmourService {
@@ -40,13 +39,10 @@ public class ArmourService {
 
     public void delete(int id) throws NonexistentResourceException {
 
-        Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
+        ArmourEntity armour = this.armourRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
 
-        if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("Armour doesn't exist", id);
-        }
-
-        this.itemRepository.delete(optionalArmour.get());
+        this.itemRepository.delete(armour);
 
     }
 
@@ -54,13 +50,8 @@ public class ArmourService {
     @Transactional
     public ArmourEntity updateComplete(int id, ArmourDTO armourDTO) throws NonexistentResourceException {
 
-        Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
-
-        if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("Armour doesn't exist", id);
-        }
-
-        ArmourEntity armour = optionalArmour.get();
+        ArmourEntity armour = this.armourRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
 
         armour.setType(armourDTO.getType());
         armour.setRarity(armourDTO.getRarity());
@@ -76,13 +67,8 @@ public class ArmourService {
     @Transactional
     public ArmourEntity updatePartial(int id, ArmourDTO armourDTO) throws NonexistentResourceException {
 
-        Optional<ArmourEntity> optionalArmour = this.armourRepository.findById(id);
-
-        if (!optionalArmour.isPresent()) {
-            throw new NonexistentResourceException("Armour doesn't exist", id);
-        }
-
-        ArmourEntity armour = optionalArmour.get();
+        ArmourEntity armour = this.armourRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
 
         if (armourDTO.getName() != null) {
             armour.setName(armourDTO.getName());
@@ -118,7 +104,8 @@ public class ArmourService {
     }
 
     public ArmourEntity findById(int id) throws NonexistentResourceException {
-        return this.armourRepository.findById(id).orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
+        return this.armourRepository.findById(id)
+            .orElseThrow(() -> new NonexistentResourceException("Armour doesn't exist", id));
     }
 
 }

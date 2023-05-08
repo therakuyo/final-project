@@ -18,7 +18,6 @@ import textbasedgame.finalproject.services.JewelleryService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +38,13 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = JewelleryListDTO.class))
     )
     @GetMapping
-    public ResponseEntity<JewelleryListDTO> getAll(){
+    public ResponseEntity<JewelleryListDTO> getAll() {
 
         Iterable<JewelleryEntity> jewellery = this.jewelleryService.getAllJewellery();
 
         List<JewelleryDTO> jewelleryDTOS = new ArrayList<>();
 
-        for (JewelleryEntity jewelleryEntity : jewellery){
+        for (JewelleryEntity jewelleryEntity : jewellery) {
             jewelleryDTOS.add(JewelleryDTO.from(jewelleryEntity));
         }
 
@@ -63,7 +62,7 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = JewelleryDTO.class))
     )
     @PostMapping
-    public ResponseEntity<JewelleryDTO> create(@Valid @RequestBody JewelleryDTO jewellery){
+    public ResponseEntity<JewelleryDTO> create(@Valid @RequestBody JewelleryDTO jewellery) {
 
         JewelleryEntity jewelleryEntity = this.jewelleryService.add(jewellery);
 
@@ -105,7 +104,8 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updateComplete(@Min(1) @PathVariable("id") int id, @Valid @RequestBody JewelleryDTO jewelleryDTO)
+    public ResponseEntity<JewelleryDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+                                                       @Valid @RequestBody JewelleryDTO jewelleryDTO)
         throws NonexistentResourceException {
 
         JewelleryEntity jewelleryEntity = this.jewelleryService.updateComplete(id, jewelleryDTO);
@@ -129,7 +129,8 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updatePartial(@Min(1) @PathVariable("id") int id, @Valid @RequestBody JewelleryDTO jewelleryDTO)
+    public ResponseEntity<JewelleryDTO> updatePartial(@Min(1) @PathVariable("id") int id,
+                                                      @RequestBody JewelleryDTO jewelleryDTO)
         throws NonexistentResourceException {
 
         JewelleryEntity jewelleryEntity = this.jewelleryService.updatePartial(id, jewelleryDTO);
