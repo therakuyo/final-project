@@ -20,6 +20,8 @@ public class EnemyEntity {
 
     private String name;
 
+    private int powerLevel = 0;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "enemies_items",

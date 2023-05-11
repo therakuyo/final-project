@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
-import textbasedgame.finalproject.exceptions.NonexistentResourceException;
+import textbasedgame.finalproject.exceptions.*;
 import textbasedgame.finalproject.responses.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
@@ -50,5 +49,40 @@ public class GameGlobalExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(MaxOfItemTypeEquippedExceeded.class)
+    public ResponseEntity<ErrorResponse> handleMaxOfItemTypeEquippedExceededException(MaxOfItemTypeEquippedExceeded e){
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.TOO_MANY_REQUESTS);
+
+    }
+
+
+    @ExceptionHandler(ItemAlreadyEquippedException.class)
+    public ResponseEntity<ErrorResponse> handleItemAlreadyEquippedException(ItemAlreadyEquippedException e){
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @ExceptionHandler(ItemIsNotEquippedException.class)
+    public ResponseEntity<ErrorResponse> handleItemIsNotEquippedException(ItemIsNotEquippedException e){
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @ExceptionHandler(ZonesDontMatchException.class)
+    public ResponseEntity<ErrorResponse> handleZonesDontMatchException(ZonesDontMatchException e){
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
 
 }

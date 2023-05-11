@@ -29,4 +29,18 @@ public enum ItemType {
 
     private final int code;
 
+
+    private static ItemType safeValueOf(String value){
+
+        try {
+
+            return ItemType.valueOf(value);
+
+        }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+    }
+
 }

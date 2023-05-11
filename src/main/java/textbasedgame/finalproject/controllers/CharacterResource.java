@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.dtos.list_dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
-import textbasedgame.finalproject.exceptions.NonexistentResourceException;
+import textbasedgame.finalproject.exceptions.*;
 import textbasedgame.finalproject.services.AssignToZoneService;
 import textbasedgame.finalproject.services.CharacterService;
+import textbasedgame.finalproject.services.EquipItemService;
+import textbasedgame.finalproject.services.FightService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -34,6 +35,12 @@ public class CharacterResource {
 
     @Autowired
     private AssignToZoneService assignToZoneService;
+
+    @Autowired
+    private EquipItemService equipItemService;
+
+    @Autowired
+    private FightService fightService;
 
 
     @Operation(summary = "Get all characters")
@@ -168,6 +175,121 @@ public class CharacterResource {
         throws NonexistentResourceException {
 
         this.assignToZoneService.assignCharacter(characterId, zoneId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Equip item on character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "429",
+        description = "TOO MANY REQUESTS",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{characterId}/equip/{itemId}")
+    public ResponseEntity<Void> equipItem(@Min(1) @PathVariable("characterId") int characterId,
+                                          @Min(1) @PathVariable("itemId") int itemId)
+        throws NonexistentResourceException, MaxOfItemTypeEquippedExceeded, ItemAlreadyEquippedException {
+
+        this.equipItemService.equipItemOnCharacter(characterId, itemId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Unequip item from character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{characterId}/unequip/{itemId}")
+    public ResponseEntity<Void> unequipItem(@Min(1) @PathVariable("characterId") int characterId,
+                                            @Min(1) @PathVariable("itemId") int itemId)
+        throws NonexistentResourceException, ItemIsNotEquippedException {
+
+        this.equipItemService.unequipItemFromCharacter(characterId, itemId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Calculate power level for character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/calculate/{id}")
+    public ResponseEntity<CharacterDTO> calculatePowerLevel(@Min(1) @PathVariable("id") int id)
+        throws NonexistentResourceException {
+
+        CharacterEntity characterEntity = this.characterService.findById(id);
+
+        this.fightService.calculateCharacterPowerLevel(id);
+
+        CharacterDTO responseDTO = CharacterDTO.from(characterEntity);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Unequip item from character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{characterId}/fight/{enemyId}")
+    public ResponseEntity<Void> fight(@Min(1) @PathVariable("characterId") int characterId,
+                                      @Min(1) @PathVariable("enemyId") int enemyId)
+        throws NonexistentResourceException, ZonesDontMatchException {
+
+        this.fightService.fight(characterId, enemyId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 

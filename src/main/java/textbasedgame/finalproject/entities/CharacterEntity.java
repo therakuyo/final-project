@@ -11,6 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name = "characters")
 public class CharacterEntity {
 
@@ -21,12 +22,14 @@ public class CharacterEntity {
 
     private String name;
 
-
     private int level;
+
+    private int powerLevel = 0;
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @ToString.Exclude
     private ClassEntity characterClass;
 
 

@@ -10,7 +10,6 @@ import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.ItemRepository;
 import textbasedgame.finalproject.repositories.JewelleryRepository;
 
-import java.util.Optional;
 
 @Service
 public class JewelleryService {

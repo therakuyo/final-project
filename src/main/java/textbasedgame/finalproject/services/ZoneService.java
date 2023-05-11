@@ -8,7 +8,6 @@ import textbasedgame.finalproject.entities.ZoneEntity;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.ZoneRepository;
 
-import java.util.Optional;
 
 @Service
 public class ZoneService {

@@ -7,6 +7,7 @@ import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.entities.ItemEntity;
 import textbasedgame.finalproject.exceptions.ItemAlreadyEquippedException;
+import textbasedgame.finalproject.exceptions.ItemIsNotEquippedException;
 import textbasedgame.finalproject.exceptions.MaxOfItemTypeEquippedExceeded;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
@@ -17,20 +18,6 @@ import textbasedgame.finalproject.repositories.ItemRepository;
 
 @Service
 public class EquipItemService {
-
-    /*
-
-    equip weapons, armour and jewellery on character and enemy
-
-    can have only one two-handed weapon or two one-handed weapons
-
-    can have only 3 jewellery ( thinking about limiting to 2 "rings" 1 "amulet" )
-
-    can have only 6 armour ( limiting to 1 of each: "helmet", "boots", "gloves", "shoulder plates", "chest piece", "belt" )
-
-    trying to limit by name of the item: if "helmet" is found then you can't equip another helmet
-
-     */
 
     @Autowired
     private CharacterRepository characterRepository;
@@ -74,6 +61,28 @@ public class EquipItemService {
 
     }
 
+    @Transactional
+    public void unequipItemFromCharacter(int characterId, int itemId)
+        throws NonexistentResourceException, ItemIsNotEquippedException {
+
+        CharacterEntity character = this.characterRepository.findById(characterId)
+            .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", characterId));
+
+
+        ItemEntity item = this.itemRepository.findById(itemId)
+            .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
+
+
+        if (!character.getCharacterItems().contains(item)) {
+            throw new ItemIsNotEquippedException("Item is not equipped", itemId);
+        }
+
+        character.getCharacterItems().remove(item);
+
+        this.characterRepository.save(character);
+
+    }
+
 
 
     @Transactional
@@ -103,6 +112,28 @@ public class EquipItemService {
         }
 
         enemy.getEnemyItems().add(item);
+
+        this.enemyRepository.save(enemy);
+
+    }
+
+    @Transactional
+    public void unequipItemFromEnemy(int enemyId, int itemId)
+        throws NonexistentResourceException, ItemIsNotEquippedException {
+
+        EnemyEntity enemy = this.enemyRepository.findById(enemyId)
+            .orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", enemyId));
+
+
+        ItemEntity item = this.itemRepository.findById(itemId)
+            .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
+
+
+        if (!enemy.getEnemyItems().contains(item)) {
+            throw new ItemIsNotEquippedException("Item is not equipped", itemId);
+        }
+
+        enemy.getEnemyItems().remove(item);
 
         this.enemyRepository.save(enemy);
 

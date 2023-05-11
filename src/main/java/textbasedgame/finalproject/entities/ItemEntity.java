@@ -20,10 +20,12 @@ public abstract class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Enumerated(EnumType.STRING)
     private ItemType type;
 
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
+    //todo - implement bidirectional to get all items equipped on character
 
 }
