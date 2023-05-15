@@ -74,6 +74,11 @@ public class FightService {
 
         if (character.getPowerLevel() > enemy.getPowerLevel()){
             System.out.println("You win!");
+
+            character.setExperiencePoints(character.getExperiencePoints() + 50);
+
+            this.characterRepository.save(character);
+
         }
 
     }
@@ -122,6 +127,7 @@ public class FightService {
     }
 
 
+    @Transactional
     public int extractItemValues(int itemId) {
 
         int itemValue = 0;

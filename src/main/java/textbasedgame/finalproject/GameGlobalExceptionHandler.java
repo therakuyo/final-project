@@ -85,4 +85,13 @@ public class GameGlobalExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(NotEnoughExperiencePointsToLevelUp.class)
+    public ResponseEntity<ErrorResponse> handleNotEnoughExperiencePointsToLevelUp(NotEnoughExperiencePointsToLevelUp e){
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
 }

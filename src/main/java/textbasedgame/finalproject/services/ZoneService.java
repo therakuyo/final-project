@@ -41,6 +41,7 @@ public class ZoneService {
 
     }
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         ZoneEntity zone = this.zoneRepository.findById(id)

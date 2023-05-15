@@ -15,10 +15,7 @@ import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.dtos.list_dtos.CharacterListDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.exceptions.*;
-import textbasedgame.finalproject.services.AssignToZoneService;
-import textbasedgame.finalproject.services.CharacterService;
-import textbasedgame.finalproject.services.EquipItemService;
-import textbasedgame.finalproject.services.FightService;
+import textbasedgame.finalproject.services.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -42,6 +39,9 @@ public class CharacterResource {
 
     @Autowired
     private FightService fightService;
+
+    @Autowired
+    private LevelUpService levelUpService;
 
 
     @Operation(summary = "Get all characters")
@@ -292,6 +292,59 @@ public class CharacterResource {
         throws NonexistentResourceException, ZonesDontMatchException {
 
         this.fightService.fight(characterId, enemyId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Level up character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/levelup/{id}")
+    public ResponseEntity<Void> levelUp(@Min(1) @PathVariable("id") int id)
+        throws NonexistentResourceException, NotEnoughExperiencePointsToLevelUp {
+
+        this.levelUpService.levelUp(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Check level up progress")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @GetMapping("/progress/{id}")
+    public ResponseEntity<Void> checkProgress(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+
+        this.levelUpService.checkProgress(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
 

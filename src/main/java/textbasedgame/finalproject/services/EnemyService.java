@@ -2,6 +2,7 @@ package textbasedgame.finalproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.EnemyDTO;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
@@ -25,6 +26,7 @@ public class EnemyService {
 
     }
 
+    @Transactional
     public EnemyEntity update(int id, EnemyDTO enemyDTO) throws NonexistentResourceException {
 
         EnemyEntity enemy = this.enemyRepository.findById(id)
@@ -36,6 +38,7 @@ public class EnemyService {
 
     }
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         EnemyEntity enemy = this.enemyRepository.findById(id)

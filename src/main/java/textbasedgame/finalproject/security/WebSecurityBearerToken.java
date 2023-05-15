@@ -73,7 +73,7 @@ public class WebSecurityBearerToken {
             .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/characters/**").authenticated();
+            .antMatchers("/api/characters/**").permitAll();
 
         http.authenticationProvider(authenticationProvider());
 

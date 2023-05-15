@@ -98,6 +98,7 @@ public class CharacterService {
 
     }
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         CharacterEntity character = this.characterRepository.findById(id)

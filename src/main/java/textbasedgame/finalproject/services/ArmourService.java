@@ -37,6 +37,7 @@ public class ArmourService {
     }
 
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         ArmourEntity armour = this.armourRepository.findById(id)

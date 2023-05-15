@@ -52,6 +52,7 @@ public class JewelleryService {
     }
 
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         JewelleryEntity jewellery = this.jewelleryRepository.findById(id)

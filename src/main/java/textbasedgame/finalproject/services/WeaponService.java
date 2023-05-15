@@ -37,6 +37,7 @@ public class WeaponService {
     }
 
 
+    @Transactional
     public void delete(int id) throws NonexistentResourceException {
 
         WeaponEntity weapon = this.weaponRepository.findById(id)
