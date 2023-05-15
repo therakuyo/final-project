@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2023 at 06:21 PM
+-- Generation Time: May 14, 2023 at 07:58 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -52,6 +52,7 @@ CREATE TABLE `characters` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `level` int(11) NOT NULL,
+  `power_level` int(11) NOT NULL DEFAULT 0,
   `class_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -59,8 +60,8 @@ CREATE TABLE `characters` (
 -- Dumping data for table `characters`
 --
 
-INSERT INTO `characters` (`id`, `name`, `level`, `class_id`) VALUES
-(1, 'TheRakuyo', 20, 1);
+INSERT INTO `characters` (`id`, `name`, `level`, `power_level`, `class_id`) VALUES
+(1, 'TheRakuyo', 20, 255, 1);
 
 -- --------------------------------------------------------
 
@@ -135,15 +136,16 @@ INSERT INTO `class` (`id`, `class_name`) VALUES
 
 CREATE TABLE `enemies` (
   `id` int(11) NOT NULL,
-  `name` varchar(30) NOT NULL
+  `name` varchar(30) NOT NULL,
+  `power_level` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `enemies`
 --
 
-INSERT INTO `enemies` (`id`, `name`) VALUES
-(1, 'Minotaur');
+INSERT INTO `enemies` (`id`, `name`, `power_level`) VALUES
+(1, 'Minotaur', 10);
 
 -- --------------------------------------------------------
 
@@ -156,6 +158,13 @@ CREATE TABLE `enemies_items` (
   `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `enemies_items`
+--
+
+INSERT INTO `enemies_items` (`enemy_id`, `item_id`) VALUES
+(1, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -166,6 +175,13 @@ CREATE TABLE `enemies_zones` (
   `enemy_id` int(11) NOT NULL,
   `zone_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `enemies_zones`
+--
+
+INSERT INTO `enemies_zones` (`enemy_id`, `zone_id`) VALUES
+(1, 7);
 
 -- --------------------------------------------------------
 
@@ -257,7 +273,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `birth_date`, `age`) VALUES
-(1, 'lucian', 'gandu', 'gandu.lucian@yahoo.com', '1234', '2001-01-25', 22);
+(1, 'lucian', 'gandu', 'gandulucian@yahoo.com', 'abcd', '2001-01-25', 22),
+(2, 'asdh', 'asdfoi', 'email@email.com', 'parola', '2023-05-10', 24);
 
 -- --------------------------------------------------------
 
@@ -467,7 +484,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `zones`

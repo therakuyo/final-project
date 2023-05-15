@@ -26,6 +26,9 @@ public class CharacterEntity {
 
     private int powerLevel = 0;
 
+    @Column(name = "experience_points")
+    private int experiencePoints = 0;
+
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id")

@@ -35,13 +35,11 @@ public class UserEntity {
 
     private int age;
 
-    private boolean active;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name="users_roles",
-        joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
+        joinColumns = @JoinColumn(name="users_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name="roles_id", referencedColumnName = "id")
     )
     private Set<RoleEntity> roles = new HashSet<>();
 

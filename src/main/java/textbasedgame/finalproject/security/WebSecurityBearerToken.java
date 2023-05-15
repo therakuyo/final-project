@@ -25,15 +25,17 @@ public class WebSecurityBearerToken {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private AuthTokenFilter authTokenFilter;
-
-    @Autowired
     private AuthJwtEntryPoint authJwtEntryPoint;
 
 
     @Bean
+    public AuthTokenFilter authTokenFilter(){
+        return  new AuthTokenFilter();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+        return new BCryptPasswordEncoder(4);
     }
 
 
@@ -71,11 +73,11 @@ public class WebSecurityBearerToken {
             .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/characters/**").permitAll();
+            .antMatchers("/api/characters/**").authenticated();
 
         http.authenticationProvider(authenticationProvider());
 
-        http.addFilterBefore(this.authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
