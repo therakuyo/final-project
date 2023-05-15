@@ -10,12 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.dtos.EnemyDTO;
 import textbasedgame.finalproject.dtos.list_dtos.EnemyListDTO;
+import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.EnemyEntity;
+import textbasedgame.finalproject.exceptions.ItemAlreadyEquippedException;
+import textbasedgame.finalproject.exceptions.ItemIsNotEquippedException;
+import textbasedgame.finalproject.exceptions.MaxOfItemTypeEquippedExceeded;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.services.AssignToZoneService;
 import textbasedgame.finalproject.services.EnemyService;
+import textbasedgame.finalproject.services.EquipItemService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -33,6 +39,9 @@ public class EnemyResource {
 
     @Autowired
     private AssignToZoneService assignToZoneService;
+
+    @Autowired
+    private EquipItemService equipItemService;
 
 
     @Operation(summary = "Get all enemies")
@@ -168,5 +177,67 @@ public class EnemyResource {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+
+    @Operation(summary = "Equip item on enemy")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "429",
+        description = "TOO MANY REQUESTS",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{enemyId}/equip/{itemId}")
+    public ResponseEntity<Void> equipItem(@Min(1) @PathVariable("enemyId") int enemyId,
+                                          @Min(1) @PathVariable("itemId") int itemId)
+        throws NonexistentResourceException, MaxOfItemTypeEquippedExceeded, ItemAlreadyEquippedException {
+
+        this.equipItemService.equipItemOnEnemy(enemyId, itemId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Unequip item from enemy")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{enemyId}/unequip/{itemId}")
+    public ResponseEntity<Void> unequipItem(@Min(1) @PathVariable("enemyId") int enemyId,
+                                            @Min(1) @PathVariable("itemId") int itemId)
+        throws NonexistentResourceException, ItemIsNotEquippedException {
+
+        this.equipItemService.unequipItemFromEnemy(enemyId, itemId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 
 }

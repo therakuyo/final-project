@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.exceptions.CharacterAlreadyExistsException;
 import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
@@ -52,7 +53,13 @@ public class CharacterService {
 
 
     @Transactional
-    public CharacterEntity add(CharacterDTO characterDTO, int classId) throws NonexistentResourceException {
+    public CharacterEntity add(CharacterDTO characterDTO, int classId)
+        throws NonexistentResourceException, CharacterAlreadyExistsException {
+
+        if (this.characterRepository.existsByName(characterDTO.getName())) {
+
+            throw new CharacterAlreadyExistsException("Character already exists", characterDTO.getName());
+        }
 
         CharacterEntity character = new CharacterEntity();
 

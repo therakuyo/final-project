@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.entities.ItemEntity;
+import textbasedgame.finalproject.enums.Status;
 import textbasedgame.finalproject.exceptions.ItemAlreadyEquippedException;
 import textbasedgame.finalproject.exceptions.ItemIsNotEquippedException;
 import textbasedgame.finalproject.exceptions.MaxOfItemTypeEquippedExceeded;
@@ -41,7 +42,7 @@ public class EquipItemService {
             .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
 
 
-        if (character.getCharacterItems().contains(item)) {
+        if (item.getStatus().getCode() == 2) {
             throw new ItemAlreadyEquippedException("Item is already equipped", itemId);
         }
 
@@ -56,8 +57,10 @@ public class EquipItemService {
         }
 
         character.getCharacterItems().add(item);
+        item.setStatus(Status.EQUIPPED);
 
         this.characterRepository.save(character);
+        this.itemRepository.save(item);
 
     }
 
@@ -73,13 +76,15 @@ public class EquipItemService {
             .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
 
 
-        if (!character.getCharacterItems().contains(item)) {
+        if (item.getStatus().getCode() == 1) {
             throw new ItemIsNotEquippedException("Item is not equipped", itemId);
         }
 
         character.getCharacterItems().remove(item);
+        item.setStatus(Status.UNEQUIPPED);
 
         this.characterRepository.save(character);
+        this.itemRepository.save(item);
 
     }
 
@@ -97,7 +102,7 @@ public class EquipItemService {
             .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
 
 
-        if (enemy.getEnemyItems().contains(item)) {
+        if (item.getStatus().getCode() == 2) {
             throw new ItemAlreadyEquippedException("Item is already equipped", itemId);
         }
 
@@ -112,8 +117,10 @@ public class EquipItemService {
         }
 
         enemy.getEnemyItems().add(item);
+        item.setStatus(Status.EQUIPPED);
 
         this.enemyRepository.save(enemy);
+        this.itemRepository.save(item);
 
     }
 
@@ -129,13 +136,15 @@ public class EquipItemService {
             .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
 
 
-        if (!enemy.getEnemyItems().contains(item)) {
+        if (item.getStatus().getCode() == 1) {
             throw new ItemIsNotEquippedException("Item is not equipped", itemId);
         }
 
         enemy.getEnemyItems().remove(item);
+        item.setStatus(Status.UNEQUIPPED);
 
         this.enemyRepository.save(enemy);
+        this.itemRepository.save(item);
 
     }
 

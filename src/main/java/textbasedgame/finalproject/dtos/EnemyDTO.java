@@ -21,11 +21,14 @@ public class EnemyDTO {
     @NoDigits
     private String name;
 
+    private int givesXp;
+
 
     public static EnemyDTO from(EnemyEntity enemyEntity){
 
         return EnemyDTO.builder()
             .name(enemyEntity.getName())
+            .givesXp(enemyEntity.getGivesXp())
             .build();
 
     }

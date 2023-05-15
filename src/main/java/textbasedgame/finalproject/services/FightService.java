@@ -3,10 +3,7 @@ package textbasedgame.finalproject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import textbasedgame.finalproject.entities.CharacterEntity;
-import textbasedgame.finalproject.entities.EnemyEntity;
-import textbasedgame.finalproject.entities.ItemEntity;
-import textbasedgame.finalproject.entities.ZoneEntity;
+import textbasedgame.finalproject.entities.*;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.exceptions.ZonesDontMatchException;
 import textbasedgame.finalproject.repositories.*;
@@ -32,9 +29,6 @@ public class FightService {
 
     @Autowired
     private EnemyRepository enemyRepository;
-
-    @Autowired
-    private ZoneRepository zoneRepository;
 
     @Autowired
     private ArmourRepository armourRepository;
@@ -75,7 +69,7 @@ public class FightService {
         if (character.getPowerLevel() > enemy.getPowerLevel()){
             System.out.println("You win!");
 
-            character.setExperiencePoints(character.getExperiencePoints() + 50);
+            character.setExperiencePoints(character.getExperiencePoints() + enemy.getGivesXp());
 
             this.characterRepository.save(character);
 

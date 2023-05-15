@@ -35,7 +35,7 @@ public class WebSecurityBearerToken {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(4);
+        return new BCryptPasswordEncoder(10);
     }
 
 
@@ -73,7 +73,8 @@ public class WebSecurityBearerToken {
             .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/characters/**").permitAll();
+            .antMatchers("/api/characters/**").permitAll()
+            .antMatchers("/api/classes/**").authenticated();
 
         http.authenticationProvider(authenticationProvider());
 
@@ -82,7 +83,5 @@ public class WebSecurityBearerToken {
         return http.build();
 
     }
-
-    //todo - not working
 
 }

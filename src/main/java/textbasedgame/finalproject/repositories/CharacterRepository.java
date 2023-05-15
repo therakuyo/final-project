@@ -12,4 +12,6 @@ public interface CharacterRepository extends CrudRepository<CharacterEntity, Int
 
     Optional<CharacterEntity> findByName(String name);
 
+    boolean existsByName(String name);
+
 }

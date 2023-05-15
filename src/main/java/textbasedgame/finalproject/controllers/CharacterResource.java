@@ -127,7 +127,7 @@ public class CharacterResource {
     @PostMapping("/{id}")
     public ResponseEntity<CharacterDTO> create(@Min(1) @PathVariable int id,
                                                @Valid @RequestBody CharacterDTO character)
-        throws NonexistentResourceException {
+        throws NonexistentResourceException, CharacterAlreadyExistsException {
 
         CharacterEntity characterEntity = this.characterService.add(character, id);
 

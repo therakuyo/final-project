@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import textbasedgame.finalproject.dtos.ClassDTO;
@@ -39,8 +40,8 @@ public class ClassResource {
         description = "OK",
         content = @Content(schema = @Schema(implementation = ClassDTO.class))
     )
-
     @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ClassDTO> create(@Valid @RequestBody ClassDTO classDTO) {
 
         ClassEntity classEntity = this.classService.add(classDTO);
@@ -57,6 +58,7 @@ public class ClassResource {
         content = @Content(schema = @Schema(implementation = ClassListDTO.class))
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PLAYER')")
     public ResponseEntity<ClassListDTO> getAll(){
 
         Iterable<ClassEntity> classEntities = this.classService.getAll();
@@ -86,6 +88,7 @@ public class ClassResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.classService.delete(id);
@@ -107,6 +110,7 @@ public class ClassResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ClassDTO> update(@Min(1) @PathVariable("id") int id, @Valid @RequestBody ClassDTO classDTO)
         throws NonexistentResourceException {
 

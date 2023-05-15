@@ -22,6 +22,9 @@ public class EnemyEntity {
 
     private int powerLevel = 0;
 
+    @Column(name = "gives_xp")
+    private int givesXp;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "enemies_items",

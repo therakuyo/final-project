@@ -21,6 +21,7 @@ public class EnemyService {
         EnemyEntity enemy = new EnemyEntity();
 
         enemy.setName(enemyDTO.getName());
+        enemy.setGivesXp(enemyDTO.getGivesXp());
 
         return this.enemyRepository.save(enemy);
 

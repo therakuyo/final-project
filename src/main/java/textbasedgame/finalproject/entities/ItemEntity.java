@@ -3,6 +3,7 @@ package textbasedgame.finalproject.entities;
 import lombok.*;
 import textbasedgame.finalproject.enums.ItemType;
 import textbasedgame.finalproject.enums.Rarity;
+import textbasedgame.finalproject.enums.Status;
 
 import javax.persistence.*;
 
@@ -26,6 +27,7 @@ public abstract class ItemEntity {
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
-    //todo - implement bidirectional to get all items equipped on character
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.UNEQUIPPED;
 
 }
