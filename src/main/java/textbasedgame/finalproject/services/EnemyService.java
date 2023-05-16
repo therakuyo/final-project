@@ -22,6 +22,7 @@ public class EnemyService {
 
         enemy.setName(enemyDTO.getName());
         enemy.setGivesXp(enemyDTO.getGivesXp());
+        enemy.setGivesGoldCoins(enemyDTO.getGivesGoldCoins());
 
         return this.enemyRepository.save(enemy);
 

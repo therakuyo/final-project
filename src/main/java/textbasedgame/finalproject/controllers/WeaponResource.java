@@ -84,7 +84,7 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+    public ResponseEntity<Void> delete(@Min(4) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.weaponService.delete(id);
 
@@ -105,7 +105,7 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+    public ResponseEntity<WeaponDTO> updateComplete(@Min(4) @PathVariable("id") int id,
                                                     @Valid @RequestBody WeaponDTO weaponDTO)
         throws NonexistentResourceException {
 
@@ -130,7 +130,7 @@ public class WeaponResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<WeaponDTO> updatePartial(@Min(1) @PathVariable("id") int id, @RequestBody WeaponDTO weaponDTO)
+    public ResponseEntity<WeaponDTO> updatePartial(@Min(4) @PathVariable("id") int id, @RequestBody WeaponDTO weaponDTO)
         throws NonexistentResourceException {
 
         WeaponEntity weapon = this.weaponService.updatePartial(id, weaponDTO);

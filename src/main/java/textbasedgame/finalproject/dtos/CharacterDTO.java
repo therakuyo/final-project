@@ -31,7 +31,9 @@ public class CharacterDTO {
     @NoDigits
     private String className;
 
-    private Integer experiencePoints;
+    private Integer experiencePoints = 0;
+
+    private Integer goldCoins = 0;
 
 
     public static CharacterDTO from(CharacterEntity characterEntity) {
@@ -41,6 +43,7 @@ public class CharacterDTO {
             .level(characterEntity.getLevel())
             .className(characterEntity.getCharacterClass().getClassName())
             .experiencePoints(characterEntity.getExperiencePoints())
+            .goldCoins(characterEntity.getGoldCoins())
             .build();
 
     }

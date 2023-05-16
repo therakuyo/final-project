@@ -170,7 +170,7 @@ public class EnemyResource {
     )
     @PatchMapping("/{enemyId}/assign/{zoneId}")
     public ResponseEntity<Void> assignToZone(@Min(1) @PathVariable int enemyId,
-                                             @Min(1) @PathVariable int zoneId) throws NonexistentResourceException {
+                                             @Min(5) @PathVariable int zoneId) throws NonexistentResourceException {
 
         this.assignToZoneService.assignEnemy(enemyId, zoneId);
 
@@ -202,7 +202,7 @@ public class EnemyResource {
     )
     @PatchMapping("/{enemyId}/equip/{itemId}")
     public ResponseEntity<Void> equipItem(@Min(1) @PathVariable("enemyId") int enemyId,
-                                          @Min(1) @PathVariable("itemId") int itemId)
+                                          @Min(4) @PathVariable("itemId") int itemId)
         throws NonexistentResourceException, MaxOfItemTypeEquippedExceeded, ItemAlreadyEquippedException {
 
         this.equipItemService.equipItemOnEnemy(enemyId, itemId);
@@ -230,7 +230,7 @@ public class EnemyResource {
     )
     @PatchMapping("/{enemyId}/unequip/{itemId}")
     public ResponseEntity<Void> unequipItem(@Min(1) @PathVariable("enemyId") int enemyId,
-                                            @Min(1) @PathVariable("itemId") int itemId)
+                                            @Min(4) @PathVariable("itemId") int itemId)
         throws NonexistentResourceException, ItemIsNotEquippedException {
 
         this.equipItemService.unequipItemFromEnemy(enemyId, itemId);

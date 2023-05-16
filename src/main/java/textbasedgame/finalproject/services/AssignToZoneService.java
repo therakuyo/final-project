@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.EnemyEntity;
 import textbasedgame.finalproject.entities.ZoneEntity;
+import textbasedgame.finalproject.exceptions.CharacterLevelDoesntMatchZoneReqException;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.EnemyRepository;
@@ -27,13 +28,18 @@ public class AssignToZoneService {
 
     @Transactional
     public void assignCharacter(int characterId, int zoneId)
-        throws NonexistentResourceException {
+        throws NonexistentResourceException, CharacterLevelDoesntMatchZoneReqException {
 
         CharacterEntity character = this.characterRepository.findById(characterId)
             .orElseThrow(() -> new NonexistentResourceException("This character doesn't exist", characterId));
 
         ZoneEntity zone = this.zoneRepository.findById(zoneId)
             .orElseThrow(() -> new NonexistentResourceException("This zone doesn't exist", zoneId));
+
+        if (!(zone.getDifficulty().getStart() <= character.getLevel() && character.getLevel() <= zone.getDifficulty().getEnd())){
+
+            throw new CharacterLevelDoesntMatchZoneReqException("Character level is too high or too low to enter this zone");
+        }
 
         character.getCharacterZones().add(zone);
 

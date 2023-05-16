@@ -137,4 +137,26 @@ public class GameGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(CharacterLevelDoesntMatchZoneReqException.class)
+    public ResponseEntity<ErrorResponse> handleCharacterLevelDoesntMatchZoneReqException(CharacterLevelDoesntMatchZoneReqException e){
+
+        log.debug("Character level is too high or too low to enter this zone: {}", e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @ExceptionHandler(NotEnoughGoldToBuyItemException.class)
+    public ResponseEntity<ErrorResponse> handleNotEnoughGoldToBuyItemException(NotEnoughGoldToBuyItemException e){
+
+        log.debug("You don't have enough gold to buy this item, needed amount: {}", e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
 }

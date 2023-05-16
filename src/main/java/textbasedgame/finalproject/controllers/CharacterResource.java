@@ -43,6 +43,9 @@ public class CharacterResource {
     @Autowired
     private LevelUpService levelUpService;
 
+    @Autowired
+    private ShopService shopService;
+
 
     @Operation(summary = "Get all characters")
     @ApiResponse(
@@ -51,7 +54,6 @@ public class CharacterResource {
         content = @Content(schema = @Schema(implementation = CharacterListDTO.class))
     )
     @GetMapping
-    @PreAuthorize("hasRole('PLAYER') or hasRole('ADMIN')")
     public ResponseEntity<CharacterListDTO> getAll() {
 
         Iterable<CharacterEntity> characters = this.characterService.getAll();
@@ -173,8 +175,8 @@ public class CharacterResource {
     )
     @PatchMapping("/{characterId}/assign/{zoneId}")
     public ResponseEntity<Void> assignToZone(@Min(1) @PathVariable("characterId") int characterId,
-                                             @Min(1) @PathVariable("zoneId") int zoneId)
-        throws NonexistentResourceException {
+                                             @Min(5) @PathVariable("zoneId") int zoneId)
+        throws NonexistentResourceException, CharacterLevelDoesntMatchZoneReqException {
 
         this.assignToZoneService.assignCharacter(characterId, zoneId);
 
@@ -206,7 +208,7 @@ public class CharacterResource {
     )
     @PatchMapping("/{characterId}/equip/{itemId}")
     public ResponseEntity<Void> equipItem(@Min(1) @PathVariable("characterId") int characterId,
-                                          @Min(1) @PathVariable("itemId") int itemId)
+                                          @Min(4) @PathVariable("itemId") int itemId)
         throws NonexistentResourceException, MaxOfItemTypeEquippedExceeded, ItemAlreadyEquippedException {
 
         this.equipItemService.equipItemOnCharacter(characterId, itemId);
@@ -234,7 +236,7 @@ public class CharacterResource {
     )
     @PatchMapping("/{characterId}/unequip/{itemId}")
     public ResponseEntity<Void> unequipItem(@Min(1) @PathVariable("characterId") int characterId,
-                                            @Min(1) @PathVariable("itemId") int itemId)
+                                            @Min(4) @PathVariable("itemId") int itemId)
         throws NonexistentResourceException, ItemIsNotEquippedException {
 
         this.equipItemService.unequipItemFromCharacter(characterId, itemId);
@@ -345,6 +347,36 @@ public class CharacterResource {
     public ResponseEntity<Void> checkProgress(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.levelUpService.checkProgress(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @Operation(summary = "Buy item from shop for character")
+    @ApiResponse(
+        responseCode = "200",
+        description = "OK",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "NOT FOUND",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = "BAD REQUEST",
+        content = @Content(schema = @Schema(implementation = Void.class))
+    )
+    @PatchMapping("/{characterId}/buy/{itemId}/from/{shopId}")
+    public ResponseEntity<Void> buyItem(@Min(1) @PathVariable("characterId") int characterId,
+                                        @Min(4) @PathVariable("itemId") int itemId,
+                                        @Min(1) @PathVariable("shopId") int shopId)
+        throws NonexistentResourceException, NotEnoughGoldToBuyItemException {
+
+        this.characterService.buyItem(characterId, itemId);
+        this.shopService.removeItemFromShop(itemId, shopId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 

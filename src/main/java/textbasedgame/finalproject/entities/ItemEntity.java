@@ -6,6 +6,8 @@ import textbasedgame.finalproject.enums.Rarity;
 import textbasedgame.finalproject.enums.Status;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -29,5 +31,15 @@ public abstract class ItemEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNEQUIPPED;
+
+    private int price = 0;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "items_shops",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "shop_id")
+    )
+    private Set<ShopEntity> shopItems = new HashSet<>();
 
 }

@@ -84,7 +84,7 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+    public ResponseEntity<Void> delete(@Min(13) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.armourService.delete(id);
 
@@ -105,7 +105,7 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+    public ResponseEntity<ArmourDTO> updateComplete(@Min(13) @PathVariable("id") int id,
                                                     @Valid @RequestBody ArmourDTO armourDTO)
         throws NonexistentResourceException {
 
@@ -130,7 +130,7 @@ public class ArmourResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<ArmourDTO> updatePartial(@Min(1) @PathVariable("id") int id, @RequestBody ArmourDTO armourDTO)
+    public ResponseEntity<ArmourDTO> updatePartial(@Min(13) @PathVariable("id") int id, @RequestBody ArmourDTO armourDTO)
         throws NonexistentResourceException {
 
         ArmourEntity armourEntity = this.armourService.updatePartial(id, armourDTO);

@@ -66,7 +66,7 @@ public class ZoneResource {
         description = "NOT FOUND",
         content = @Content(schema = @Schema(implementation = Void.class)))
     @GetMapping("/{id}")
-    public ResponseEntity<ZoneDTO> getById(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+    public ResponseEntity<ZoneDTO> getById(@Min(5) @PathVariable("id") int id) throws NonexistentResourceException {
 
         ZoneEntity zoneEntity = this.zoneService.findById(id);
 
@@ -105,7 +105,7 @@ public class ZoneResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+    public ResponseEntity<Void> delete(@Min(5) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.zoneService.delete(id);
 
@@ -126,7 +126,7 @@ public class ZoneResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<ZoneDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+    public ResponseEntity<ZoneDTO> updateComplete(@Min(5) @PathVariable("id") int id,
                                                   @Valid @RequestBody ZoneDTO zoneDTO)
         throws NonexistentResourceException {
 
@@ -151,7 +151,7 @@ public class ZoneResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<ZoneDTO> updatePartial(@Min(1) @PathVariable("id") int id, @RequestBody ZoneDTO zoneDTO)
+    public ResponseEntity<ZoneDTO> updatePartial(@Min(5) @PathVariable("id") int id, @RequestBody ZoneDTO zoneDTO)
         throws NonexistentResourceException {
 
         ZoneEntity zoneEntity = this.zoneService.updatePartial(id, zoneDTO);

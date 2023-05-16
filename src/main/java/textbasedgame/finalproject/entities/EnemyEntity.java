@@ -25,6 +25,9 @@ public class EnemyEntity {
     @Column(name = "gives_xp")
     private int givesXp;
 
+    @Column(name = "gives_gold_coins")
+    private int givesGoldCoins;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "enemies_items",

@@ -71,6 +71,8 @@ public class FightService {
 
             character.setExperiencePoints(character.getExperiencePoints() + enemy.getGivesXp());
 
+            character.setGoldCoins(character.getGoldCoins() + enemy.getGivesGoldCoins());
+
             this.characterRepository.save(character);
 
         }

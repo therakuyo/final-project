@@ -83,7 +83,7 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Min(1) @PathVariable("id") int id) throws NonexistentResourceException {
+    public ResponseEntity<Void> delete(@Min(10) @PathVariable("id") int id) throws NonexistentResourceException {
 
         this.jewelleryService.delete(id);
 
@@ -104,7 +104,7 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PutMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updateComplete(@Min(1) @PathVariable("id") int id,
+    public ResponseEntity<JewelleryDTO> updateComplete(@Min(10) @PathVariable("id") int id,
                                                        @Valid @RequestBody JewelleryDTO jewelleryDTO)
         throws NonexistentResourceException {
 
@@ -129,7 +129,7 @@ public class JewelleryResource {
         content = @Content(schema = @Schema(implementation = Void.class))
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<JewelleryDTO> updatePartial(@Min(1) @PathVariable("id") int id,
+    public ResponseEntity<JewelleryDTO> updatePartial(@Min(10) @PathVariable("id") int id,
                                                       @RequestBody JewelleryDTO jewelleryDTO)
         throws NonexistentResourceException {
 

@@ -6,14 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import textbasedgame.finalproject.dtos.CharacterDTO;
 import textbasedgame.finalproject.entities.CharacterEntity;
 import textbasedgame.finalproject.entities.ClassEntity;
+import textbasedgame.finalproject.entities.EnemyEntity;
+import textbasedgame.finalproject.entities.ItemEntity;
 import textbasedgame.finalproject.exceptions.CharacterAlreadyExistsException;
 import textbasedgame.finalproject.exceptions.NonexistentCharacterException;
 import textbasedgame.finalproject.exceptions.NonexistentResourceException;
+import textbasedgame.finalproject.exceptions.NotEnoughGoldToBuyItemException;
 import textbasedgame.finalproject.repositories.CharacterRepository;
 import textbasedgame.finalproject.repositories.ClassRepository;
+import textbasedgame.finalproject.repositories.ItemRepository;
+import textbasedgame.finalproject.repositories.ShopRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CharacterService {
@@ -24,14 +28,17 @@ public class CharacterService {
     @Autowired
     private ClassRepository classRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private ShopRepository shopRepository;
+
 
     public List<CharacterEntity> findByLevel(int level) {
         return this.characterRepository.findByLevel(level);
     }
 
-    //    public List<CharacterEntity> findByClass(String className) {
-    //        return this.characterRepository.findByClassEntity_ClassName(className);
-    //    }
 
     public CharacterEntity findByName(String name) throws NonexistentCharacterException {
 
@@ -88,22 +95,6 @@ public class CharacterService {
 
     }
 
-    @Transactional
-    public CharacterEntity changeClass(int id, CharacterDTO characterDTO) throws NonexistentResourceException {
-
-        Optional<CharacterEntity> optionalCharacter = this.characterRepository.findById(id);
-
-        if (!optionalCharacter.isPresent()) {
-            throw new NonexistentResourceException("Character doesn't exist", id);
-        }
-
-        CharacterEntity characterEntity = optionalCharacter.get();
-        characterEntity.getCharacterClass().setClassName(characterDTO.getClassName());
-
-        return characterEntity;
-        //TODO - not working as intended
-
-    }
 
     @Transactional
     public void delete(int id) throws NonexistentResourceException {
@@ -112,6 +103,35 @@ public class CharacterService {
             .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", id));
 
         this.characterRepository.delete(character);
+
+    }
+
+
+    @Transactional
+    public void buyItem(int characterId, int itemId)
+        throws NonexistentResourceException, NotEnoughGoldToBuyItemException {
+
+        CharacterEntity character = this.characterRepository.findById(characterId)
+            .orElseThrow(() -> new NonexistentResourceException("Character doesn't exist", characterId));
+
+        ItemEntity item = this.itemRepository.findById(itemId)
+            .orElseThrow(() -> new NonexistentResourceException("Item doesn't exist", itemId));
+
+        if (item.getPrice() == 0){
+            throw new NonexistentResourceException("Item hasn't been added to shop yet", itemId);
+        }
+
+        if (character.getGoldCoins() < item.getPrice()){
+            throw new NotEnoughGoldToBuyItemException("More gold needed to buy this item", item.getPrice());
+        }
+
+        character.getCharacterItems().add(item);
+        character.setGoldCoins(character.getGoldCoins() - item.getPrice());
+
+        item.setPrice(0);
+
+        this.characterRepository.save(character);
+        this.itemRepository.save(item);
 
     }
 

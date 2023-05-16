@@ -21,7 +21,9 @@ public class EnemyDTO {
     @NoDigits
     private String name;
 
-    private int givesXp;
+    private Integer givesXp;
+
+    private Integer givesGoldCoins;
 
 
     public static EnemyDTO from(EnemyEntity enemyEntity){
@@ -29,6 +31,7 @@ public class EnemyDTO {
         return EnemyDTO.builder()
             .name(enemyEntity.getName())
             .givesXp(enemyEntity.getGivesXp())
+            .givesGoldCoins(enemyEntity.getGivesGoldCoins())
             .build();
 
     }
