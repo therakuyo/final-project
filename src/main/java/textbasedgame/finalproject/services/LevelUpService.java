@@ -26,6 +26,7 @@ public class LevelUpService {
             throw new NotEnoughExperiencePointsToLevelUp("You need more experience points to level up");
         }
 
+        character.setExperiencePoints(character.getExperiencePoints() - checkLevelUpRequirement(characterId));
         character.setLevel(character.getLevel() + 1);
 
         this.characterRepository.save(character);

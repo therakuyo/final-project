@@ -89,7 +89,10 @@ public class FightService {
 
         for (ItemEntity item : character.getCharacterItems()) {
 
-            powerLevel += extractItemValues(item.getId());
+            if (item.getStatus().getCode() == 2) {
+
+                powerLevel += extractItemValues(item.getId());
+            }
 
         }
 
