@@ -40,7 +40,6 @@ public class FightService {
     private JewelleryRepository jewelleryRepository;
 
 
-
     @Transactional
     public void fight(int characterId, int enemyId) throws NonexistentResourceException, ZonesDontMatchException {
 
@@ -50,7 +49,7 @@ public class FightService {
         EnemyEntity enemy = this.enemyRepository.findById(enemyId)
             .orElseThrow(() -> new NonexistentResourceException("Enemy doesn't exist", enemyId));
 
-        if (!character.getCharacterZones().equals(enemy.getEnemyZones())){
+        if (!character.getCharacterZones().equals(enemy.getEnemyZones())) {
 
             throw new ZonesDontMatchException("Different zones. Can't fight", characterId, enemyId);
         }
@@ -58,15 +57,15 @@ public class FightService {
         calculateCharacterPowerLevel(characterId);
         calculateEnemyPowerLevel(enemyId);
 
-        if (character.getPowerLevel() < enemy.getPowerLevel()){
+        if (character.getPowerLevel() < enemy.getPowerLevel()) {
             System.out.println("You died!");
         }
 
-        if (character.getPowerLevel() == enemy.getPowerLevel()){
+        if (character.getPowerLevel() == enemy.getPowerLevel()) {
             System.out.println("Draw");
         }
 
-        if (character.getPowerLevel() > enemy.getPowerLevel()){
+        if (character.getPowerLevel() > enemy.getPowerLevel()) {
             System.out.println("You win!");
 
             character.setExperiencePoints(character.getExperiencePoints() + enemy.getGivesXp());
@@ -78,7 +77,6 @@ public class FightService {
         }
 
     }
-
 
 
     @Transactional
@@ -139,15 +137,18 @@ public class FightService {
 
         if (this.weaponRepository.findById(itemId).isPresent()) {
 
-            itemValue += this.weaponRepository.findById(itemId).get().getAttackDamage();
+            itemValue += this.weaponRepository.findById(itemId).get().getAttackDamage() * 2;
 
         }
 
         if (this.jewelleryRepository.findById(itemId).isPresent()) {
 
             itemValue +=
-                this.jewelleryRepository.findById(itemId).get().getMagicDamage() + this.jewelleryRepository.findById(
-                    itemId).get().getAttackDamage() + this.jewelleryRepository.findById(itemId).get().getHealthPoints()
+                this.jewelleryRepository.findById(itemId).get().getMagicDamage() * 2
+                    + this.jewelleryRepository.findById(
+                    itemId).get().getAttackDamage() * 2 + this.jewelleryRepository.findById(itemId)
+                    .get()
+                    .getHealthPoints()
                     + this.jewelleryRepository.findById(itemId).get().getResistance();
 
         }
